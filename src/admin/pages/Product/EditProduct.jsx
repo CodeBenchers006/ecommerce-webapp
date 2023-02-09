@@ -10,7 +10,7 @@ function EditProduct() {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate("/admin/product/view/"+product_id);
+    navigate("/admin/product/view/" + product_id);
   };
 
   const showAlert = () => {
@@ -100,10 +100,12 @@ function EditProduct() {
     <div>
       <h3 className="mb-4">Edit Product</h3>
       <button
-          className="btn btn-info"
-          style={{ width: "100px", color: "white", float: "right" }}
-          onClick={goBack}
-        >Back</button>
+        className="btn btn-info"
+        style={{ width: "100px", color: "white", float: "right" }}
+        onClick={goBack}
+      >
+        Back
+      </button>
       <div className="pt-5">
         <form action="" onSubmit={handleSubmit}>
           <label htmlFor="" className="pb-3">
@@ -123,20 +125,22 @@ function EditProduct() {
           </label>
           <textarea
             type="text"
-            Description="name"
+            name="description"
             id=""
             className="form-control"
             value={product.description}
+            onChange={(e) => editHandler(e)}
           />
           <label htmlFor="" className="pb-3 pt-2">
             Price
           </label>
           <input
             type="text"
-            Description="name"
+            name="price"
             id=""
             className="form-control"
             value={product.price}
+            onChange={(e) => editHandler(e)}
           />
           <label htmlFor="" className="pb-3 pt-2">
             Category
@@ -158,10 +162,11 @@ function EditProduct() {
           </label>
           <input
             type="text"
-            Description="name"
+            name="url"
             id=""
             className="form-control"
             value={product.imageUrl}
+            onChange={(e) => editHandler(e)}
           />
 
           <div className="pt-5">
@@ -169,7 +174,7 @@ function EditProduct() {
             <Image width={400} src={product.imageUrl} />
           </div>
           <button className="btn btn-success border-0 rounded-3 my-5">
-            Edit Category
+            Edit Product
           </button>
         </form>
       </div>

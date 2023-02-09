@@ -159,7 +159,7 @@ function AddProduct() {
           </div>
           <div className="pt-5">
             <p>Preview</p>
-            <Image width={200} src="" />
+            <Image width={200} src={imageUrl} />
           </div>
           <button className="btn btn-success border-0 rounded-3 my-5">
             Add Product
