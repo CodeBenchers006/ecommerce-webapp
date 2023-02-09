@@ -45,6 +45,7 @@ function Category() {
               <Card
                 style={{
                   width: 300,
+                  height: 400,
                   marginBottom: "40px",
                 }}
                 cover={<img alt="example" src={category.imageUrl} />}

@@ -6,11 +6,14 @@ import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
+import ProductCard from "../../components/ProductCard";
 
 const baseURL = "http://localhost:8081/";
 
 function UserHomepage() {
   const [categories, setCategories] = useState([]);
+  const [product, setProduct] = useState([]);
+
   useEffect(() => {
     fetch(baseURL + "category/list")
       .then((res) => res.json())
@@ -22,6 +25,21 @@ function UserHomepage() {
         console.log(err.message);
       });
   }, []);
+
+
+  useEffect(() => {
+    fetch(baseURL + "product/listAll")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setProduct(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  
 
   return (
     <>
@@ -174,6 +192,24 @@ function UserHomepage() {
                   );
                 })}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-wrapper-4 py-5">
+        <div className="container-xxl">
+          <div className="row">
+            <div className="col-12">
+              <h3 className="section-heading">Featured Collection </h3>
+            </div>
+            <div className="d-flex product-items  wrapper ">
+            {product.map((prod)=>{
+              return(
+                <ProductCard item={prod} />
+              )
+            })}
+            
             </div>
           </div>
         </div>
