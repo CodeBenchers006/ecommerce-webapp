@@ -16,6 +16,7 @@ import ViewProduct from "./admin/pages/Product/ViewProduct";
 import EditProduct from "./admin/pages/Product/EditProduct";
 import UserHomepage from "./user/pages/User_Homepage/UserHomepage";
 import Layout from "./user/components/Layout";
+import Store from "./user/pages/Store/Store";
 
 function App() {
   return (
@@ -44,6 +45,8 @@ function App() {
 
           <Route path="/home/" element={<Layout/>}>
           <Route index element={<UserHomepage />} />
+          <Route path="store" element={<Store />} />
+          
           </Route>
         </Routes>
       </BrowserRouter>

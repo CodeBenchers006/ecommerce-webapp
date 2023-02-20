@@ -7,6 +7,7 @@ import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import ProductCard from "../../components/ProductCard";
+import Meta from "../../components/Meta";
 
 const baseURL = "http://localhost:8081/";
 
@@ -26,7 +27,6 @@ function UserHomepage() {
       });
   }, []);
 
-
   useEffect(() => {
     fetch(baseURL + "product/listAll")
       .then((res) => res.json())
@@ -39,10 +39,9 @@ function UserHomepage() {
       });
   }, []);
 
-  
-
   return (
     <>
+      <Meta title="Budget Basket" />
       <section className="home-wrapper-1 py-5 ">
         <div className="container-xxl">
           <div className="row">
@@ -204,12 +203,9 @@ function UserHomepage() {
               <h3 className="section-heading">Featured Collection </h3>
             </div>
             <div className="d-flex product-items  wrapper ">
-            {product.map((prod)=>{
-              return(
-                <ProductCard item={prod} />
-              )
-            })}
-            
+              {product.map((prod) => {
+                return <ProductCard item={prod} />;
+              })}
             </div>
           </div>
         </div>
