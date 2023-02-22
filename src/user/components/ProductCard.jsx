@@ -9,7 +9,7 @@ function ProductCard(props) {
 
   let location=useLocation();
   console.log(location.pathname)
-  
+
   return (
     <div className={` ${location.pathname === "/home/store" ? `col-${props.grid}` : "col-3" }` } style={props.card_style}>
       <div
@@ -30,7 +30,7 @@ function ProductCard(props) {
             value={3.5}
             edit={false}
           />
-          <p className="price">₹ {props.item.price}</p>
+          <p className="price" style={{fontSize:"20px"}}>₹ {props.item.price}</p>
           <div className="action-bar">
             <div className="justify-content-center">
               <Link to="" className="px-4 icon">

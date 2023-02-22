@@ -258,3 +258,19 @@ footer:not(:first-child) {
 .icon{
   margin-left: 35px;
 }
+
+.col-12 .product-card{
+  flex-direction: initial;
+  gap: 20px;
+}
+
+.col-12 .product-card .card-image{
+  width: 50%;
+  min-width: 50%;
+}
+
+.col-12 .product-card .card-img-top{
+  width: 80%;
+  min-width: 200px;
+  min-height: 300px;
+}

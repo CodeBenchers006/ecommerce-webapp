@@ -145,7 +145,7 @@ function Store() {
                   </div>
                 </div>
               </div>
-              <div className="product-list pb-5 my-2">
+              <div className="product-list pb-5 my-2 wrapper">
                 <div className="d-flex flex-wrap gap-10">
                 <div className="row">
                 {product.map((prod=>{
