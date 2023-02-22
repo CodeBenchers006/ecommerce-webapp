@@ -42,11 +42,9 @@ function App() {
             <Route path="product/edit/:product_id" element={<EditProduct />} />
           </Route>
 
-
-          <Route path="/home/" element={<Layout/>}>
-          <Route index element={<UserHomepage />} />
-          <Route path="store" element={<Store />} />
-          
+          <Route path="/home/" element={<Layout />}>
+            <Route index element={<UserHomepage />} />
+            <Route path="store" element={<Store />} />
           </Route>
         </Routes>
       </BrowserRouter>

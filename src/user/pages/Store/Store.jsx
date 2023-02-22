@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./Store.css";
-import {NavLink} from 'react-router-dom'
+import { NavLink } from "react-router-dom";
+import ShortTextOutlinedIcon from "@mui/icons-material/ShortTextOutlined";
+import DensitySmallIcon from "@mui/icons-material/DensitySmall";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import ProductCard from "../../components/ProductCard";
 
 const baseURL = "http://localhost:8081/";
 
 function Store() {
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState([]);
+
+  const [grid, setGrid] = useState(4);
+
+ 
 
   useEffect(() => {
     fetch(baseURL + "category/list")
@@ -47,7 +55,13 @@ function Store() {
                 <div>
                   <ul className="ps-0">
                     {categories.map((category) => {
-                      return <li><NavLink to={"/home/store/"+category.categoryName}>{category.categoryName}</NavLink></li>;
+                      return (
+                        <li>
+                          <NavLink to={"/home/store/" + category.categoryName}>
+                            {category.categoryName}
+                          </NavLink>
+                        </li>
+                      );
                     })}
                   </ul>
                 </div>
@@ -99,11 +113,47 @@ function Store() {
                     </select>
                   </div>
                   <div className="d-flex align-items-center gap-10">
-                    <p className="totalproducts mb-0">{product.length} products</p>
-                    <div className="d-flex align-items-center gap-10">
-
+                    <p className="totalproducts mb-0">
+                      {product.length} products
+                    </p>
+                    <div className="d-flex align-items-center  grid">
+                      <button
+                        className="btn p-0"
+                        onClick={() => {
+                          setGrid(4);
+                        }}
+                      >
+                        <DensitySmallIcon className="icon mx-2" />
+                      </button>
+                      <button
+                        className="btn p-0"
+                        onClick={() => {
+                          setGrid(6);
+                        }}
+                      >
+                        <ShortTextOutlinedIcon className="icon mx-2" />
+                      </button>
+                      <button
+                        className="btn p-0"
+                        onClick={() => {
+                          setGrid(12);
+                        }}
+                      >
+                        <ListAltOutlinedIcon className="icon mx-2" />
+                      </button>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className="product-list pb-5 my-2">
+                <div className="d-flex flex-wrap gap-10">
+                <div className="row">
+                {product.map((prod=>{
+                  return(
+                    <ProductCard grid={grid} item={prod} />
+                  )
+                }))}
+                </div>
                 </div>
               </div>
             </div>

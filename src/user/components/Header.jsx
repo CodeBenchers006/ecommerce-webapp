@@ -9,6 +9,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
 
+
 const baseURL = "http://localhost:8081/";
 
 function Header() {
