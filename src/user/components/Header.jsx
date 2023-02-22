@@ -9,6 +9,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
 
+
 const baseURL = "http://localhost:8081/";
 
 function Header() {
@@ -151,11 +152,11 @@ function Header() {
                 </div>
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
-                    <NavLink to="" className="px-2">
+                    <NavLink to="/home" className="px-2">
                       Home
                     </NavLink>
-                    <NavLink to="" className="px-2">
-                      Product
+                    <NavLink to="/home/store" className="px-2">
+                      Store
                     </NavLink>
                     <NavLink to="" className="px-2">
                       Contact

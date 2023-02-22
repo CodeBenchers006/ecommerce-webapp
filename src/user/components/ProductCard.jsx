@@ -1,22 +1,27 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { PlusOutlined, HeartOutlined, EyeOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../pages/User_Homepage/userhomepage.css";
 
+
 function ProductCard(props) {
+
+  let location=useLocation();
+  console.log(location.pathname)
+  
   return (
-    <div className="col-3" style={{ width: "28%" }}>
+    <div className={` ${location.pathname === "/home/store" ? `col-${props.grid}` : "col-3" }` } style={props.card_style}>
       <div
-        class="card product-card position-relative"
-        style={{ width: "20rem", height: "35rem" }}
+        className="card product-card position-relative my-1"
+        style={props.styles}
       >
-        <div className="card-image" style={{ height: "300px" }}>
+        <div className="card-image" >
           <img src={props.item.imageUrl} className="card-img-top" alt="..." />
         </div>
-        <div class="card-body product-details" >
+        <div className="card-body product-details" >
           <h5 className="title">{props.item.name}</h5>
-          <h6 style={{ height: "40px" }}>{props.item.description}</h6>
+          <h6 style={{ height: "40px", marginBottom:"20px" }}>{props.item.description}</h6>
           <ReactStars
             count={5}
             size={24}
