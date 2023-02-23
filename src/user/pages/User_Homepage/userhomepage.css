@@ -227,12 +227,9 @@ footer:not(:first-child) {
   align-items: center;
 }
 
-
-
 .product-card .product-details h5 {
   color: var(--color-bf4800);
   font-size: 18px;
-  
 }
 
 .product-card .product-details h6 {
@@ -248,29 +245,58 @@ footer:not(:first-child) {
   font-size: 20px;
 }
 
-
-
-.product-items{
+.product-items {
   overflow-x: auto;
-  
 }
 
-.icon{
+.icon {
   margin-left: 35px;
 }
 
-.col-12 .product-card{
+.col-12 .product-card {
   flex-direction: initial;
   gap: 20px;
 }
 
-.col-12 .product-card .card-image{
+.col-12 .product-card .card-image {
   width: 50%;
   min-width: 50%;
 }
 
-.col-12 .product-card .card-img-top{
+.col-12 .product-card .card-img-top {
   width: 80%;
   min-width: 200px;
   min-height: 300px;
 }
+
+/*Contact page*/
+.contact-inner-wrapper {
+  padding: 30px 20px;
+  border-radius: 15px;
+  background-color: white;
+  gap: 15px;
+}
+
+.contact-inner-wrapper > div {
+  width: 48%;
+}
+
+.contact-title {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 35px;
+  text-align: left;
+  margin-top: 0;
+}
+
+.contact-inner-wrapper form .form-control {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border-color: transparent;
+  padding: 10px;
+}
+
+/*Contact page Ends*/
+
+
+

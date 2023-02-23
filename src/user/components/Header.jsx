@@ -158,7 +158,7 @@ function Header() {
                     <NavLink to="/home/store" className="px-2">
                       Store
                     </NavLink>
-                    <NavLink to="" className="px-2">
+                    <NavLink to="/home/contact" className="px-2">
                       Contact
                     </NavLink>
                   </div>

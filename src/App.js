@@ -17,6 +17,8 @@ import EditProduct from "./admin/pages/Product/EditProduct";
 import UserHomepage from "./user/pages/User_Homepage/UserHomepage";
 import Layout from "./user/components/Layout";
 import Store from "./user/pages/Store/Store";
+import Contact from "./user/pages/Contact/Contact";
+import SingleProduct from "./user/pages/Product/SingleProduct";
 
 function App() {
   return (
@@ -44,7 +46,11 @@ function App() {
 
           <Route path="/home/" element={<Layout />}>
             <Route index element={<UserHomepage />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="store" element={<Store />} />
+            <Route path="store/product/:product_id" element={<SingleProduct/>} />
+            
+            
           </Route>
         </Routes>
       </BrowserRouter>
