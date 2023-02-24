@@ -170,7 +170,7 @@ function UserHomepage() {
           <div className="row">
             <div className="col-12">
               <div className="categories wrapper justify-content-center text-center">
-                {categories.map((category) => {
+                {categories?.map((category) => {
                   return (
                     <button className="btn">
                       <div className="gap-30 align-items-center item">

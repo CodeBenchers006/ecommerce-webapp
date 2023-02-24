@@ -10,7 +10,6 @@ import Accordion from "react-bootstrap/Accordion";
 
 function SingleProduct() {
   const { product_id } = useParams();
-  
 
   const baseURL = "http://localhost:8081/";
 
@@ -103,10 +102,14 @@ function SingleProduct() {
                 <div>
                   <Accordion>
                     <Accordion.Item eventKey="0">
-                      <Accordion.Header><strong>Shipping & Returns</strong></Accordion.Header>
+                      <Accordion.Header>
+                        <strong>Shipping & Returns</strong>
+                      </Accordion.Header>
                       <Accordion.Body>
-                        Free shipping and returns available on all orders above INR 499. <br />
-                        We ship all orders within <strong>5-10 business days!</strong>
+                        Free shipping and returns available on all orders above
+                        INR 499. <br />
+                        We ship all orders within{" "}
+                        <strong>5-10 business days!</strong>
                       </Accordion.Body>
                     </Accordion.Item>
                   </Accordion>

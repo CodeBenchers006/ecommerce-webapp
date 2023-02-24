@@ -16,8 +16,6 @@ function Store() {
 
   const [grid, setGrid] = useState(4);
 
- 
-
   useEffect(() => {
     fetch(baseURL + "category/list")
       .then((res) => res.json())
@@ -147,13 +145,11 @@ function Store() {
               </div>
               <div className="product-list pb-5 my-2 wrapper">
                 <div className="d-flex flex-wrap gap-10">
-                <div className="row">
-                {product.map((prod=>{
-                  return(
-                    <ProductCard grid={grid} item={prod} />
-                  )
-                }))}
-                </div>
+                  <div className="row">
+                    {product.map((prod) => {
+                      return <ProductCard grid={grid} item={prod} />;
+                    })}
+                  </div>
                 </div>
               </div>
             </div>

@@ -19,6 +19,7 @@ import Layout from "./user/components/Layout";
 import Store from "./user/pages/Store/Store";
 import Contact from "./user/pages/Contact/Contact";
 import SingleProduct from "./user/pages/Product/SingleProduct";
+import Cart from "./user/pages/Cart/Cart";
 
 function App() {
   return (
@@ -49,6 +50,8 @@ function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="store" element={<Store />} />
             <Route path="store/product/:product_id" element={<SingleProduct/>} />
+
+            <Route path="cart" element={<Cart/>} />
             
             
           </Route>

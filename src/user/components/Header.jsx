@@ -9,7 +9,6 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
 
-
 const baseURL = "http://localhost:8081/";
 
 function Header() {
@@ -96,7 +95,7 @@ function Header() {
                 </div>
                 <div>
                   <Link
-                    to=""
+                    to="/home/cart"
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <ShoppingCartIcon />
@@ -140,7 +139,7 @@ function Header() {
                       {categories.map((category) => {
                         return (
                           <Dropdown.Item
-                            href={"/"+category.categoryName}
+                            href={"/" + category.categoryName}
                             className="text-white"
                           >
                             {category.categoryName}
