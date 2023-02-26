@@ -17,6 +17,13 @@ import EditProduct from "./admin/pages/Product/EditProduct";
 import UserHomepage from "./user/pages/User_Homepage/UserHomepage";
 import Layout from "./user/components/Layout";
 import Store from "./user/pages/Store/Store";
+import Contact from "./user/pages/Contact/Contact";
+import SingleProduct from "./user/pages/Product/SingleProduct";
+import Cart from "./user/pages/Cart/Cart";
+import Checkout from "./user/pages/Checkout/Checkout";
+import Payment from "./user/pages/Checkout/Payment";
+import Shipping from "./user/pages/Checkout/Shipping";
+import Register from "./common/Register/Register";
 
 function App() {
   return (
@@ -27,7 +34,9 @@ function App() {
         <Routes>
           <Route path="/">
             <Route index element={<Login />} />
+            <Route path="/register" element={<Register/>} />
           </Route>
+          
           <Route path="/admin/" element={<Homepage />}>
             <Route index element={<Dashboard />} />
             <Route path="order" element={<Order />} />
@@ -44,7 +53,16 @@ function App() {
 
           <Route path="/home/" element={<Layout />}>
             <Route index element={<UserHomepage />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="store" element={<Store />} />
+            <Route path="store/product/:product_id" element={<SingleProduct/>} />
+
+            <Route path="cart" element={<Cart/>} />
+            <Route path="checkout" element={<Checkout/>} />
+            <Route path="checkout/shipping" element={<Shipping/>} />
+            <Route path="checkout/payment" element={<Payment/>} />
+            
+            
           </Route>
         </Routes>
       </BrowserRouter>
