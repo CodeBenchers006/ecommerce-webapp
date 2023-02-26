@@ -90,9 +90,9 @@ function Cart() {
                 <div className="d-flex align-items-end flex-column">
                   <h4>SubTotal : ₹ {cartItems.totalCost}</h4>
                   <p>Taxes and shipping calculated at checkout</p>
-                  <NavLink className="button" to="/home/store">
-                  Checkout
-                </NavLink>
+                  <NavLink className="button" to="/home/checkout">
+                    Checkout
+                  </NavLink>
                 </div>
               </div>
             </div>

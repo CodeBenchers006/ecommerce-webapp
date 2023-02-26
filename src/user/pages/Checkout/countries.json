@@ -1,0 +1,25 @@
+{
+  "country": [
+    {
+      "name": "India",
+      "currency": "INR",
+      "state": [
+        {
+          "name": "Andaman and Nicobar Islands",
+          "cities": ["Port Blair"]
+        },
+        {
+          "name": "Nagaland",
+          "cities": [
+            "Dimapur",
+            "Kohima",
+            "Zunheboto",
+            "Tuensang",
+            "Wokha",
+            "Mokokchung"
+          ]
+        }
+      ]
+    }
+  ]
+}

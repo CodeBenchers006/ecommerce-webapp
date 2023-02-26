@@ -8,11 +8,22 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
+import { useParams } from "react-router-dom";
+import { P } from "@antv/g2plot";
 
 const baseURL = "http://localhost:8081/";
 
 function Header() {
   const [categories, setCategories] = useState([]);
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const token = queryParams.get("token");
+
+  var isLoggedIn = false;
+  if (token != null) {
+    isLoggedIn = true;
+  }
+
   useEffect(() => {
     fetch(baseURL + "category/list")
       .then((res) => res.json())
@@ -95,18 +106,25 @@ function Header() {
                 </div>
                 <div>
                   <Link
-                    to="/home/cart"
+                    to={"/home/cart?token=" + token}
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <ShoppingCartIcon />
-                    <div className="d-flex flex-column">
-                      <span className="badge bg-white text-dark">0</span>
-                      <p className="mb-0">Rs. 15444</p>
-                    </div>
+                    {isLoggedIn === false ? (
+                      <div className="d-flex flex-column">
+                        <span className="badge bg-white text-dark">0</span>
+                        <p className="mb-0">Rs. 0</p>
+                      </div>
+                    ) : (
+                      <div className="d-flex flex-column">
+                        <span className="badge bg-white text-dark">0</span>
+                        <p className="mb-0">Rs. 15444</p>
+                      </div>
+                    )}
                   </Link>
                 </div>
                 <div>
-                  <Link
+                  {/* <Link
                     to=""
                     className="d-flex align-items-center gap-10 text-white"
                   >
@@ -114,7 +132,27 @@ function Header() {
                     <p className="mb-0">
                       Login <br /> Account
                     </p>
-                  </Link>
+                  </Link> */}
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      className="bg-dark border-0"
+                      id="dropdown-basic"
+                    >
+                      <AccountCircleIcon />
+                    </Dropdown.Toggle>
+
+                    {isLoggedIn === true ? (
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
+                      </Dropdown.Menu>
+                    ) : (
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="/">Sign In</Dropdown.Item>
+                        <Dropdown.Item href="/register">Register</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
+                      </Dropdown.Menu>
+                    )}
+                  </Dropdown>
                 </div>
               </div>
             </div>

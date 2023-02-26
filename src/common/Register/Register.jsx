@@ -3,17 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import axios from "axios";
 
 function Copyright(props) {
@@ -35,27 +33,29 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
+const body = {
+  email: null,
+  password: null,
+  name: null,
+};
 
-export default function Login() {
-  const loginSuccess = () => {
+export default function Register() {
+  const sucessRegistered = () => {
     Swal.fire({
-      text: "Login Success",
+      title: "Success",
+      text: "User registered successfully",
       icon: "success",
-      confirmButtonText: "Ok",
+      confirmButtonText: "Login",
     });
   };
 
-  const loginFailed =(message)=>{
+  const failedRegistered = () => {
     Swal.fire({
-      text: message,
+      title: "Failed",
+      text: "Something went wrong.Please Try Again!",
       icon: "error",
       confirmButtonText: "Ok",
     });
-  }
-
-  const body = {
-    email: null,
-    password: null,
   };
 
   const navigate = useNavigate();
@@ -67,37 +67,49 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    const user = {
+    console.log({
       email: data.get("email"),
       password: data.get("password"),
-    };
+      fname: data.get("fname"),
+      lname: data.get("lname"),
+      confirmPassword: data.get("confirmPassword"),
+    });
 
-    setUser(user);
+    if (
+      data.get("password").length >= 6 &&
+      data.get("password") === data.get("confirmPassword")
+    ) {
+      //success password check - call signup API
+      const user = {
+        email: data.get("email"),
+        password: data.get("password"),
+        name: data.get("fname") + " " + data.get("lname"),
+      };
+      setUser(user);
+      console.log(user);
 
-    await axios
-      .post(
-        baseURL + "user/signin",
-        user,
-        {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        {
-          mode: "cors",
-        }
-      )
-      
-      .then((res) => {
-        const token=res.data.token
-        loginSuccess();
-        navigate("/home?token="+token);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        const info=err.response.data
-        loginFailed(info)
-      });
+      await axios
+        .post(
+          baseURL + "user/signup",
+          user,
+          {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          {
+            mode: "cors",
+          }
+        )
+        
+        .then(() => {
+          sucessRegistered();
+          navigate("/");
+        })
+        .catch((err) => console.log(err.message));
+    } else {
+      //failed password check
+      failedRegistered();
+    }
   };
 
   return (
@@ -116,14 +128,9 @@ export default function Login() {
             <ShoppingBasketIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Register
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -134,6 +141,24 @@ export default function Login() {
               autoComplete="email"
               autoFocus
             />
+            <div className="d-flex gap-10">
+              <TextField
+                margin="normal"
+                required
+                id="fname"
+                label="First Name"
+                name="fname"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                id="lname"
+                label="Last Name"
+                name="lname"
+                autoFocus
+              />
+            </div>
             <TextField
               margin="normal"
               required
@@ -142,29 +167,31 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="confirmPassword"
             />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/" variant="body2">
+                  {"Already a member? Sign In"}
                 </Link>
               </Grid>
             </Grid>
