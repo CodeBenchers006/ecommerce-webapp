@@ -21,9 +21,10 @@ import Contact from "./user/pages/Contact/Contact";
 import SingleProduct from "./user/pages/Product/SingleProduct";
 import Cart from "./user/pages/Cart/Cart";
 import Checkout from "./user/pages/Checkout/Checkout";
-import Payment from "./user/pages/Checkout/Payment";
+import Payment from "./user/pages/Checkout/Payment/Payment";
 import Shipping from "./user/pages/Checkout/Shipping";
 import Register from "./common/Register/Register";
+import PaymentSuccess from "./user/pages/Checkout/Payment/PaymentSuccess";
 
 function App() {
   return (
@@ -61,7 +62,7 @@ function App() {
             <Route path="checkout" element={<Checkout/>} />
             <Route path="checkout/shipping" element={<Shipping/>} />
             <Route path="checkout/payment" element={<Payment/>} />
-            
+            <Route path="checkout/payment/success" element={<PaymentSuccess/>} />
             
           </Route>
         </Routes>

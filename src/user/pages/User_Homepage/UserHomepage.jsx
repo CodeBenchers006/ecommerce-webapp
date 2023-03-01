@@ -204,12 +204,15 @@ function UserHomepage() {
             </div>
             <div className="d-flex product-items  wrapper ">
               {product.map((prod) => {
+                console.log(prod)
                 return (
-                  <ProductCard
-                    item={prod}
-                    styles={{ width: "20rem", height: "35rem" }}
-                    card_style={{ width: "28%" }}
-                  />
+                  <Link to={"/home/store/product/"+prod.product_id}>
+                    <ProductCard
+                      item={prod}
+                      styles={{ width: "20rem", height: "35rem" }}
+                      card_style={{ width: "28%" }}
+                    />
+                  </Link>
                 );
               })}
             </div>
