@@ -17,7 +17,6 @@ function Header() {
 
   const token = localStorage.getItem("user_token");
   const user = localStorage.getItem("user_name");
-  
 
   var isLoggedIn = false;
   if (token !== "null") {
@@ -58,8 +57,8 @@ function Header() {
 
   const logOut = () => {
     console.log("Logging out");
-    localStorage.clear()
-    navigate("/")
+    localStorage.clear();
+    navigate("/");
   };
 
   return (
@@ -149,17 +148,18 @@ function Header() {
                     )}
                   </Link>
                 </div>
-                {user!==null?(
+                {user !== null ? (
                   <div className="">
-                  <p style={{margin:"auto", color:"white"}}>Welcome, <br/>{user}</p>
-                </div>
-                ):
-                (
+                    <p style={{ margin: "auto", color: "white" }}>
+                      Welcome, <br />
+                      {user}
+                    </p>
+                  </div>
+                ) : (
                   <div className="">
-                  <p style={{margin:"auto", color:"white"}}></p>
-                </div>
-                )
-              }
+                    <p style={{ margin: "auto", color: "white" }}></p>
+                  </div>
+                )}
                 <div>
                   {/* <Link
                     to=""
@@ -188,12 +188,10 @@ function Header() {
                       <Dropdown.Menu>
                         <Dropdown.Item href="/">Sign In</Dropdown.Item>
                         <Dropdown.Item href="/register">Register</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
                       </Dropdown.Menu>
                     )}
                   </Dropdown>
                 </div>
-                
               </div>
             </div>
           </div>

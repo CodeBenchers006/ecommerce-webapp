@@ -51,3 +51,9 @@
     font-weight: 700;
     font-size: 20px;
   }
+
+  .website-order-failed{
+    color: red;
+    font-weight: 700;
+    font-size: 20px;
+  }

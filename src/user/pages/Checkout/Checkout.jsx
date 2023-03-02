@@ -15,11 +15,15 @@ function Checkout(props) {
   if( token === null || token === ''){
     isLoggedIn =false;
   }
-  console.log(token)
-  console.log(isLoggedIn)
+ // console.log(token)
+ // console.log(isLoggedIn)
 
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+
+  const [userInfo, setUserInfo] = useState("")
+
+ 
 
   useEffect(() => {
     fetch(baseURL + "cart/items?token=" + token)
@@ -32,6 +36,19 @@ function Checkout(props) {
         console.log(err.message);
       });
   }, []);
+
+
+  useEffect(()=>{
+    fetch(baseURL+"user/"+token)
+    .then((res)=>res.json())
+    .then((data)=>{
+      console.log(data);
+      setUserInfo(data)
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  },[])
 
   const [desh, setDesh] = useState("");
 
@@ -72,7 +89,7 @@ function Checkout(props) {
                 </nav>
                 <h4 className="title total-price">Contact Information</h4>
                 <p className="user-details">
-                  Aditya Sharma (codebenchers006@gmail.com)
+                 {userInfo.name} ({userInfo.email})
                 </p>
                 <h4 className="mb-3 total-price">Shipping Address</h4>
                 <form
@@ -85,6 +102,7 @@ function Checkout(props) {
                       id=""
                       className="form-control form-select"
                       onChange={(e) => setDesh(e.target.value)}
+                      required
                     >
                       <option value="" selected disabled>
                         Select Country
@@ -102,6 +120,7 @@ function Checkout(props) {
                       id=""
                       className="form-control"
                       placeholder="First Name"
+                      required
                     />
                   </div>
                   <div className="flex-grow-1">

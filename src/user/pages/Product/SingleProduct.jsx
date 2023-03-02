@@ -13,8 +13,7 @@ import axios from "axios";
 function SingleProduct() {
   const { product_id } = useParams();
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const token = queryParams.get("token");
+  const token = localStorage.getItem("user_token");
 
   var isLoggedIn = false;
   if (token !== "null") {

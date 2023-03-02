@@ -217,9 +217,7 @@ function UserHomepage() {
                   <Link
                     to={
                       "/home/store/product/" +
-                      prod.product_id +
-                      "?token=" +
-                      token
+                      prod.product_id 
                     }
                     style={{ marginRight: "20px" }}
                     className="product-link"

@@ -8,7 +8,7 @@ import { Stripe } from "stripe";
 import axios from "axios";
 
 function Payment(props) {
-  const token=localStorage.getItem('user_token')
+  const token = localStorage.getItem("user_token");
 
   var isLoggedIn = false;
   if (token !== "null") {

@@ -7,8 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import axios from "axios";
 
 function Cart() {
-
-  const token=localStorage.getItem('user_token')
+  const token = localStorage.getItem("user_token");
 
   var isLoggedIn = false;
   var isLoggedIn = false;
@@ -134,12 +133,15 @@ function Cart() {
                 <div className="d-flex align-items-end flex-column">
                   <h4>SubTotal : ₹ {cartItems.totalCost}</h4>
                   <p>Taxes and shipping calculated at checkout</p>
-                  <NavLink
-                    className="button"
-                    to={"/home/checkout"}
-                  >
-                    Checkout
-                  </NavLink>
+                  {isLoggedIn === true ? (
+                    <NavLink className="button" to={"/home/checkout"}>
+                      Checkout
+                    </NavLink>
+                  ) : (
+                    <NavLink className="button " to={"/home/checkout"} style={{pointerEvents:"none",opacity:"0.3"}}>
+                      Checkout
+                    </NavLink>
+                  )}
                 </div>
               </div>
             </div>
