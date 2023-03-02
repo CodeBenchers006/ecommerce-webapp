@@ -6,7 +6,7 @@ import "../pages/User_Homepage/userhomepage.css";
 
 function ProductCard(props) {
   let location = useLocation();
-  console.log(location.pathname);
+  //console.log(location.pathname);
 
   return (
     <div
@@ -38,11 +38,8 @@ function ProductCard(props) {
           <p className="price" style={{ fontSize: "20px" }}>
             ₹ {props.item.price}
           </p>
-          <div className="action-bar">
+          <div className="action-bar d-flex align-items-center" style={{flexDirection:"column"}}>
             <div className="justify-content-center">
-              <Link to="" className="px-4 icon">
-                <PlusOutlined />
-              </Link>
               <Link to="" className="px-4">
                 <HeartOutlined />
               </Link>

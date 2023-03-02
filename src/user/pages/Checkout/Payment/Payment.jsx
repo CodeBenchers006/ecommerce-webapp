@@ -8,11 +8,20 @@ import { Stripe } from "stripe";
 import axios from "axios";
 
 function Payment(props) {
+  const token=localStorage.getItem('user_token')
+
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
   useEffect(() => {
-    fetch(baseURL + "cart/items?token=3bc9addb-0d4a-4dae-b2ca-ca5702e2619a")
+    fetch(baseURL + "cart/items?token=" + token)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -45,10 +54,8 @@ function Payment(props) {
       });
       //console.log(data)
     }
-    
 
-
-     console.log(paymentDataBody.checkOutArrayBody);
+    console.log(paymentDataBody.checkOutArrayBody);
   };
 
   const stripe = window.Stripe(paymentDataBody.stripeAPIToken);

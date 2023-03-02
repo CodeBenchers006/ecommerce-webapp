@@ -45,13 +45,13 @@ export default function Login() {
     });
   };
 
-  const loginFailed =(message)=>{
+  const loginFailed = (message) => {
     Swal.fire({
       text: message,
       icon: "error",
       confirmButtonText: "Ok",
     });
-  }
+  };
 
   const body = {
     email: null,
@@ -87,16 +87,20 @@ export default function Login() {
           mode: "cors",
         }
       )
-      
+
       .then((res) => {
-        const token=res.data.token
+        console.log(res.data)
+        const token = res.data.token;
+        const user = res.data.name;
+        localStorage.setItem("user_token",token)
+        localStorage.setItem("user_name",user)
         loginSuccess();
-        navigate("/home?token="+token);
+        navigate("/home");
       })
       .catch((err) => {
         console.log(err.response.data);
-        const info=err.response.data
-        loginFailed(info)
+        const info = err.response.data;
+        loginFailed(info);
       });
   };
 

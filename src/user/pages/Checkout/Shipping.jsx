@@ -5,14 +5,21 @@ import { Link, NavLink } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
 
-
 function Shipping(props) {
-  const baseURL =
-    "http://localhost:8081/cart/items?token=3bc9addb-0d4a-4dae-b2ca-ca5702e2619a";
+  const token=localStorage.getItem('user_token')
+
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+  const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
   useEffect(() => {
-    fetch(baseURL)
+    fetch(baseURL + "cart/items?token=" + token)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -25,10 +32,12 @@ function Shipping(props) {
 
   const [desh, setDesh] = useState("");
 
-  console.log(desh);
+
 
   const cartItem = cartItems.cartItemDtoList;
-  console.log(cartItem);
+
+  
+
   return (
     <>
       <Meta title="Shipping"></Meta>
@@ -74,13 +83,13 @@ function Shipping(props) {
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-4">
                       <div className="total-price">Ship To</div>
-                      <div >
+                      <div>
                         <p className="total">
                           C-15, BH Tower, Churches Colony, Dimapur. Nagaland.
                           797112
                         </p>
                       </div>
-                      <div >change</div>
+                      <div>change</div>
                     </div>
                   </div>
                 </div>
@@ -98,9 +107,7 @@ function Shipping(props) {
                         />
                         <div className="total-price">Standard</div>
                       </div>
-                      <div className="total-price">
-                        ₹ 299
-                      </div>
+                      <div className="total-price">₹ 299</div>
                     </div>
                   </div>
                 </div>
@@ -112,7 +119,7 @@ function Shipping(props) {
                       Return to Information
                     </NavLink>
                     <NavLink
-                      to="/home/checkout/payment"
+                      to={"/home/checkout/payment"}
                       className="button-ship"
                     >
                       Continue to Payment

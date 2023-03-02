@@ -6,12 +6,23 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
 
 function Checkout(props) {
-  const baseURL =
-    "http://localhost:8081/cart/items?token=3bc9addb-0d4a-4dae-b2ca-ca5702e2619a";
+  const token=localStorage.getItem('user_token')
+
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if( token === null || token === ''){
+    isLoggedIn =false;
+  }
+  console.log(token)
+  console.log(isLoggedIn)
+
+  const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
   useEffect(() => {
-    fetch(baseURL)
+    fetch(baseURL + "cart/items?token=" + token)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -162,10 +173,10 @@ function Checkout(props) {
                         Return to Cart
                       </NavLink>
                       <NavLink
-                        to="/home/checkout/shipping"
+                        to={"/home/checkout/shipping"}
                         className="button-ship"
                       >
-                        Continue to Payment
+                        Check Shipping Details
                       </NavLink>
                     </div>
                   </div>

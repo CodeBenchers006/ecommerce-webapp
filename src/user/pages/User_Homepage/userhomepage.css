@@ -296,6 +296,10 @@ footer:not(:first-child) {
   padding: 10px;
 }
 
+.product-link:hover{
+  color: black;
+}
+
 /*Contact page Ends*/
 
 

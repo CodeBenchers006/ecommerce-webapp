@@ -7,41 +7,8 @@ import data from "../countries.json";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function PaymentSuccess() {
-  const baseURL = "http://localhost:8081/";
-  const [cartItems, setCartItems] = useState("");
-
-  useEffect(() => {
-    fetch(baseURL + "cart/items?token=3bc9addb-0d4a-4dae-b2ca-ca5702e2619a")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setCartItems(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
-
-  const [desh, setDesh] = useState("");
-
-  const cartItem = cartItems.cartItemDtoList;
-
-  const checkOutArrayBody = [];
-
-  const getAllItems = () => {
-    for (let i = 0; i < cartItem.length; i++) {
-      checkOutArrayBody.push({
-        price: cartItem[i].product.price,
-        quantity: cartItem[i].quantity,
-        productId: cartItem[i].product.product_id,
-        productName: cartItem[i].product.name,
-      });
-      //console.log(data)
-    }
-
-    console.log(checkOutArrayBody);
-  };
-
+  
+  const token=localStorage.getItem('user_token')
   const current = new Date();
   const currentdate = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
   const delivereddate = `${current.getDate()+5}/${current.getMonth()+1}/${current.getFullYear()}`;

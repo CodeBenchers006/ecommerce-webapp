@@ -9,17 +9,25 @@ import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import ProductCard from "../../components/ProductCard";
 import Meta from "../../components/Meta";
 
+
 const baseURL = "http://localhost:8081/";
 
 function UserHomepage() {
+  
+
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState([]);
+
+  console.log(localStorage.getItem('user_token'))
+
+  const token=localStorage.getItem('user_token')
+  
 
   useEffect(() => {
     fetch(baseURL + "category/list")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+       // console.log(data);
         setCategories(data);
       })
       .catch((err) => {
@@ -31,7 +39,7 @@ function UserHomepage() {
     fetch(baseURL + "product/listAll")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setProduct(data);
       })
       .catch((err) => {
@@ -204,9 +212,18 @@ function UserHomepage() {
             </div>
             <div className="d-flex product-items  wrapper ">
               {product.map((prod) => {
-                console.log(prod)
+                //console.log(prod);
                 return (
-                  <Link to={"/home/store/product/"+prod.product_id}>
+                  <Link
+                    to={
+                      "/home/store/product/" +
+                      prod.product_id +
+                      "?token=" +
+                      token
+                    }
+                    style={{ marginRight: "20px" }}
+                    className="product-link"
+                  >
                     <ProductCard
                       item={prod}
                       styles={{ width: "20rem", height: "35rem" }}
