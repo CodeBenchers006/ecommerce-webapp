@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
 import Meta from "../../../components/Meta";
 import "../checkout.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import data from "../countries.json";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function PaymentSuccess() {
-  
-  const token=localStorage.getItem('user_token')
+  // const token = localStorage.getItem("user_token");
+  // const sessionId = localStorage.getItem("sessionId");
+
   const current = new Date();
-  const currentdate = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-  const delivereddate = `${current.getDate()+5}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const currentdate = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
+  const delivereddate = `${current.getDate() + 5}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
 
   return (
     <>
@@ -41,8 +44,9 @@ function PaymentSuccess() {
                       </div>
                       <div>
                         <p className="total">
-                          Aditya Sharma, <br/>C-15, BH Tower, Churches Colony,
-                          Dimapur. Nagaland. 797112 <br/>
+                          Aditya Sharma, <br />
+                          C-15, BH Tower, Churches Colony, Dimapur. Nagaland.
+                          797112 <br />
                           +91 7005165294
                         </p>
                       </div>
@@ -53,7 +57,9 @@ function PaymentSuccess() {
                       </div>
                       <div>
                         <p className="total">
-                          <strong >{currentdate} - {delivereddate}</strong>
+                          <strong>
+                            {currentdate} - {delivereddate}
+                          </strong>
                         </p>
                       </div>
                     </div>
@@ -62,7 +68,7 @@ function PaymentSuccess() {
 
                 <div className="w-100">
                   <div className="d-flex justify-content-between align-items-center border-bottom pb-4">
-                    <NavLink to="/home/" className="text-dark">
+                    <NavLink to="/home/order" className="text-dark">
                       <ArrowBackIcon className="me-2" />
                       Return to view your recent Order
                     </NavLink>

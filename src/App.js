@@ -26,6 +26,7 @@ import Shipping from "./user/pages/Checkout/Shipping";
 import Register from "./common/Register/Register";
 import PaymentSuccess from "./user/pages/Checkout/Payment/PaymentSuccess";
 import PaymentFailed from "./user/pages/Checkout/Payment/PaymentFailed";
+import UserOrder from "./user/pages/Order/UserOrder";
 
 function App() {
   return (
@@ -65,6 +66,9 @@ function App() {
             <Route path="checkout/payment" element={<Payment/>} />
             <Route path="checkout/payment/success" element={<PaymentSuccess/>} />
             <Route path="checkout/payment/failed" element={<PaymentFailed />} />
+            
+            <Route path="order" element={<UserOrder />} />
+           
           </Route>
         </Routes>
       </BrowserRouter>

@@ -236,6 +236,9 @@ function Header() {
                     <NavLink to="/home/contact" className="px-2">
                       Contact
                     </NavLink>
+                    <NavLink to="/home/order" className="px-2">
+                      Orders
+                    </NavLink>
                   </div>
                 </div>
               </div>

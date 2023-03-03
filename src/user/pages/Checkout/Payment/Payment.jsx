@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../../components/Meta";
 import "../checkout.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink ,useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import data from "../countries.json";
-import { Stripe } from "stripe";
+//import { Stripe } from "stripe";
 import axios from "axios";
 
 function Payment(props) {
   const token = localStorage.getItem("user_token");
+
+  const navigate = useNavigate();
 
   var isLoggedIn = false;
   if (token !== "null") {
@@ -32,7 +33,7 @@ function Payment(props) {
       });
   }, []);
 
-  const [desh, setDesh] = useState("");
+
 
   const cartItem = cartItems.cartItemDtoList;
 
@@ -66,7 +67,7 @@ function Payment(props) {
     console.log(paymentDataBody.checkOutArrayBody);
     axios
       .post(
-        baseURL + "order/create-checkout-session",
+        baseURL + "order/create-checkout-session?token="+token,
         paymentDataBody.checkOutArrayBody,
         {
           "Access-Control-Allow-Origin": "*",
@@ -77,8 +78,25 @@ function Payment(props) {
         }
       )
       .then((response) => {
-        localStorage.setItem("sessionId", response.data.sessionId);
-        console.log(response.data.sessionId);
+        if (response.data.sessionId !== null) {
+          localStorage.setItem("sessionId", response.data.sessionId);
+          console.log(response.data.sessionId);
+          const sessionId = response.data.sessionId;
+          axios
+            .post(
+              baseURL + "order/add?token=" + token + "&sessionId=" + sessionId
+            )
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        else(
+          navigate("/home/checkout/payment/failed")
+        )
+
         return response.data;
       })
       .then((session) => {
@@ -88,6 +106,7 @@ function Payment(props) {
       })
       .catch((err) => {
         console.log(err);
+        navigate("/home/checkout/payment/failed")
       });
   };
 
