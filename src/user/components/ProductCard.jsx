@@ -30,9 +30,7 @@ function ProductCard(props) {
         </div>
         <div className="card-body product-details">
           <h5 className="title">{props.item.name}</h5>
-          <h6 style={{ height: "40px", marginBottom: "20px" }}>
-            {props.item.description}
-          </h6>
+
           <ReactStars
             count={5}
             size={24}

@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../components/Meta";
 import "./checkout.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
+import Swal from "sweetalert2";
 
 function Checkout(props) {
-  const token=localStorage.getItem('user_token')
+  const token = localStorage.getItem("user_token");
 
   var isLoggedIn = false;
   if (token !== "null") {
     isLoggedIn = true;
   }
-  if( token === null || token === ''){
-    isLoggedIn =false;
+  if (token === null || token === "") {
+    isLoggedIn = false;
   }
- // console.log(token)
- // console.log(isLoggedIn)
+  // console.log(token)
+  // console.log(isLoggedIn)
 
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+  const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState("")
-
- 
+  const [userInfo, setUserInfo] = useState("");
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
     fetch(baseURL + "cart/items?token=" + token)
@@ -37,18 +47,17 @@ function Checkout(props) {
       });
   }, []);
 
-
-  useEffect(()=>{
-    fetch(baseURL+"user/"+token)
-    .then((res)=>res.json())
-    .then((data)=>{
-      console.log(data);
-      setUserInfo(data)
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
-  },[])
+  useEffect(() => {
+    fetch(baseURL + "user/" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setUserInfo(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   const [desh, setDesh] = useState("");
 
@@ -89,7 +98,7 @@ function Checkout(props) {
                 </nav>
                 <h4 className="title total-price">Contact Information</h4>
                 <p className="user-details">
-                 {userInfo.name} ({userInfo.email})
+                  {userInfo.name} ({userInfo.email})
                 </p>
                 <h4 className="mb-3 total-price">Shipping Address</h4>
                 <form

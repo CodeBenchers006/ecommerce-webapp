@@ -1,14 +1,16 @@
 import Meta from "../../../components/Meta";
 import "../checkout.css";
-import { NavLink } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import {  NavLink, useNavigate } from "react-router-dom";
 
 function PaymentSuccess() {
   // const token = localStorage.getItem("user_token");
   // const sessionId = localStorage.getItem("sessionId");
+  
 
   const current = new Date();
   const currentdate = `${current.getDate()}/${
@@ -23,8 +25,27 @@ function PaymentSuccess() {
   const token = localStorage.getItem("user_token");
 
   const sessionId = localStorage.getItem("sessionId");
+  const navigate = useNavigate();
 
 
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   const createorder = () => {
     if (sessionId !== null) {
@@ -33,7 +54,7 @@ function PaymentSuccess() {
         .then((response) => {
           console.log(response);
           localStorage.removeItem("sessionId");
-          window.location.reload(false)
+          window.location.reload(false);
         })
         .catch((err) => {
           console.log(err);

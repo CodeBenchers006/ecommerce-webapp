@@ -3,14 +3,16 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./cart.css";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink,useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Cart() {
   const token = localStorage.getItem("user_token");
+  const navigate = useNavigate();
 
   var isLoggedIn = false;
-  var isLoggedIn = false;
+
   if (token !== "null") {
     isLoggedIn = true;
   }
@@ -18,8 +20,21 @@ function Cart() {
     isLoggedIn = false;
   }
 
+  
+
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+
+  useEffect(()=>{
+    if(!isLoggedIn){
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/")
+    }
+  })
 
   useEffect(() => {
     fetch(baseURL + "cart/items?token=" + token)

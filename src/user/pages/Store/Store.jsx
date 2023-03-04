@@ -3,14 +3,27 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./Store.css";
 import { NavLink, Link, useParams } from "react-router-dom";
-
 import StoreByCategory from "./StoreByCategory";
+
+
 
 const baseURL = "http://localhost:8081/";
 
 function Store() {
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState([]);
+
+
+  const token = localStorage.getItem("user_token");
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+
+  
 
   useEffect(() => {
     fetch(baseURL + "category/list")
@@ -35,6 +48,9 @@ function Store() {
         console.log(err.message);
       });
   }, []);
+
+
+  
 
   return (
     <>

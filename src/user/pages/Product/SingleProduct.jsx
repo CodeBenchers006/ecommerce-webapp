@@ -96,8 +96,8 @@ function SingleProduct() {
           },
           { mode: "cors" }
         );
-       // console.log(res);
-       // window.alert("aded to cart");
+        // console.log(res);
+        // window.alert("aded to cart");
         refreshHeader();
       } catch (err) {}
     }

@@ -4,6 +4,7 @@ import "../Checkout/checkout.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Accordion from "react-bootstrap/Accordion";
+import Swal from "sweetalert2";
 
 function UserOrder() {
   const token = localStorage.getItem("user_token");
@@ -20,6 +21,17 @@ function UserOrder() {
   }
   const baseURL = "http://localhost:8081/";
   const [orderItems, setOrderItems] = useState("");
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
     fetch(baseURL + "order/listAll?token=" + token)

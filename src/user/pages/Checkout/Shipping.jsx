@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../components/Meta";
 import "./checkout.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink,useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
+import Swal from "sweetalert2";
 
 function Shipping(props) {
-  const token=localStorage.getItem('user_token')
+  const token = localStorage.getItem("user_token");
+  const navigate = useNavigate();
 
   var isLoggedIn = false;
   if (token !== "null") {
@@ -17,6 +19,17 @@ function Shipping(props) {
   }
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
     fetch(baseURL + "cart/items?token=" + token)
@@ -32,11 +45,7 @@ function Shipping(props) {
 
   const [desh, setDesh] = useState("");
 
-
-
   const cartItem = cartItems.cartItemDtoList;
-
-  
 
   return (
     <>

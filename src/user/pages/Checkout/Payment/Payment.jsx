@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //import { Stripe } from "stripe";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Payment(props) {
   const token = localStorage.getItem("user_token");
@@ -20,6 +21,17 @@ function Payment(props) {
   }
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
     fetch(baseURL + "cart/items?token=" + token)
