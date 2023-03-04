@@ -57,7 +57,7 @@ function SingleProduct() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, [product_id]);
+  }, []);
 
   const loginFailed = (message) => {
     Swal.fire({
@@ -86,7 +86,7 @@ function SingleProduct() {
       });
 
       try {
-        console.log(data);
+        //console.log(data);
         const res = await axios.post(
           baseURL + "cart/add?token=" + token,
           data,
@@ -96,7 +96,7 @@ function SingleProduct() {
           },
           { mode: "cors" }
         );
-        console.log(res);
+       // console.log(res);
        // window.alert("aded to cart");
         refreshHeader();
       } catch (err) {}

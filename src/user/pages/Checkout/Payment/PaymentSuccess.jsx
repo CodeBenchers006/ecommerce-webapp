@@ -3,6 +3,8 @@ import "../checkout.css";
 import { NavLink } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function PaymentSuccess() {
   // const token = localStorage.getItem("user_token");
@@ -15,6 +17,35 @@ function PaymentSuccess() {
   const delivereddate = `${current.getDate() + 5}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
+
+  const baseURL = "http://localhost:8081/";
+
+  const token = localStorage.getItem("user_token");
+
+  const sessionId = localStorage.getItem("sessionId");
+
+
+
+  const createorder = () => {
+    if (sessionId !== null) {
+      axios
+        .post(baseURL + "order/add?token=" + token + "&sessionId=" + sessionId)
+        .then((response) => {
+          console.log(response);
+          localStorage.removeItem("sessionId");
+          window.location.reload(false)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Session id is null");
+    }
+  };
+
+  useEffect(() => {
+    createorder();
+  }, []);
 
   return (
     <>

@@ -27,6 +27,7 @@ import Register from "./common/Register/Register";
 import PaymentSuccess from "./user/pages/Checkout/Payment/PaymentSuccess";
 import PaymentFailed from "./user/pages/Checkout/Payment/PaymentFailed";
 import UserOrder from "./user/pages/Order/UserOrder";
+import OrderDetails from "./user/pages/Order/OrderDetails";
 
 function App() {
   return (
@@ -64,11 +65,11 @@ function App() {
             <Route path="checkout" element={<Checkout/>} />
             <Route path="checkout/shipping" element={<Shipping/>} />
             <Route path="checkout/payment" element={<Payment/>} />
-            <Route path="checkout/payment/success" element={<PaymentSuccess/>} />
+            <Route exact path="checkout/payment/success" element={<PaymentSuccess/>} />
             <Route path="checkout/payment/failed" element={<PaymentFailed />} />
             
             <Route path="order" element={<UserOrder />} />
-           
+            <Route path="order/:id" element={<OrderDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

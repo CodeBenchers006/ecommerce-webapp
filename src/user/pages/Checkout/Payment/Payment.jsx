@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../../components/Meta";
 import "../checkout.css";
-import { NavLink ,useNavigate} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //import { Stripe } from "stripe";
 import axios from "axios";
@@ -32,8 +32,6 @@ function Payment(props) {
         console.log(err.message);
       });
   }, []);
-
-
 
   const cartItem = cartItems.cartItemDtoList;
 
@@ -67,7 +65,7 @@ function Payment(props) {
     console.log(paymentDataBody.checkOutArrayBody);
     axios
       .post(
-        baseURL + "order/create-checkout-session?token="+token,
+        baseURL + "order/create-checkout-session?token=" + token,
         paymentDataBody.checkOutArrayBody,
         {
           "Access-Control-Allow-Origin": "*",
@@ -78,24 +76,11 @@ function Payment(props) {
         }
       )
       .then((response) => {
+        console.log("payment", response);
         if (response.data.sessionId !== null) {
           localStorage.setItem("sessionId", response.data.sessionId);
           console.log(response.data.sessionId);
-          const sessionId = response.data.sessionId;
-          axios
-            .post(
-              baseURL + "order/add?token=" + token + "&sessionId=" + sessionId
-            )
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-        else(
-          navigate("/home/checkout/payment/failed")
-        )
+        } else navigate("/home/checkout/payment/failed");
 
         return response.data;
       })
@@ -106,7 +91,7 @@ function Payment(props) {
       })
       .catch((err) => {
         console.log(err);
-        navigate("/home/checkout/payment/failed")
+        navigate("/home/checkout/payment/failed");
       });
   };
 

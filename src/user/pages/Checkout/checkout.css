@@ -2,58 +2,62 @@
   background-color: var(--color-f5f5f7);
 }
 
-
-.gap-15{
-    gap: 65px;
+.gap-15 {
+  gap: 65px;
 }
 
-.gap-10{
+.gap-10 {
   gap: 10px;
 }
 
+.button-ship {
+  background-color: #e8202e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
 
+.button-ship:hover {
+  background-color: #ddbc28;
+  color: black;
+}
 
+.total {
+  font-size: 14px;
+  color: #777777;
+}
 
-.button-ship{
-    background-color: #e8202e;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    
-  }
-  
-  .button-ship:hover{
-    background-color: #ddbc28;
-    color: black;
-  }
+.total-price {
+  font-size: 16px;
+  color: #1c1c1b;
+}
 
-  .total{
-    font-size: 14px;
-    color: #777777;
-  }
+.item-name {
+  margin-top: 40px;
+}
 
-  .total-price{
-    font-size: 16px;
-    color: #1c1c1b;;
-  }
+.border-right {
+  border-right: 1px solid rgba(0, 0, 0, 0.25);
+}
 
-  .item-name{
-    margin-top: 40px;
-  }
+.website-order {
+  color: green;
+  font-weight: 700;
+  font-size: 20px;
+}
 
-  .border-right{
-    border-right: 1px solid rgba( 0, 0, 0, 0.25);
-  }
+.website-order-failed {
+  color: red;
+  font-weight: 700;
+  font-size: 20px;
+}
 
-  .website-order{
-    color: green;
-    font-weight: 700;
-    font-size: 20px;
-  }
+.w-80{
+  width: 80%;
+}
 
-  .website-order-failed{
-    color: red;
-    font-weight: 700;
-    font-size: 20px;
-  }
+.w-20{
+  width: 20%;
+}
+
