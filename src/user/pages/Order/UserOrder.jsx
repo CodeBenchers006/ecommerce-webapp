@@ -152,7 +152,7 @@ function UserOrder() {
                                             />
                                             <div className="p-3">
                                               <p>{item.product.name}</p>
-                                              <div className="w-30 d-flex justify-content-between">
+                                              <div className="w-30 d-flex ">
                                                 <button className="btn btn-primary">
                                                   Buy Again
                                                 </button>
