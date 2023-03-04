@@ -28,6 +28,8 @@ import PaymentSuccess from "./user/pages/Checkout/Payment/PaymentSuccess";
 import PaymentFailed from "./user/pages/Checkout/Payment/PaymentFailed";
 import UserOrder from "./user/pages/Order/UserOrder";
 import OrderDetails from "./user/pages/Order/OrderDetails";
+import StoreById from "./user/pages/Store/StoreById";
+
 
 function App() {
   return (
@@ -59,6 +61,7 @@ function App() {
             <Route index element={<UserHomepage />} />
             <Route path="contact" element={<Contact />} />
             <Route path="store" element={<Store />} />
+            <Route path="store/:id" element={<StoreById />} />
             <Route path="store/product/:product_id" element={<SingleProduct/>} />
 
             <Route path="cart" element={<Cart/>} />

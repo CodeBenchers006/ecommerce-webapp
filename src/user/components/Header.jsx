@@ -87,7 +87,7 @@ function Header() {
           <div className="row align-items-center">
             <div className="col-2">
               <h2>
-                <Link to={"/home?token=" + token} className="text-white">
+                <Link to={"/home"} className="text-white">
                   BudgetBasket.
                 </Link>
               </h2>
@@ -215,7 +215,7 @@ function Header() {
                       {categories.map((category) => {
                         return (
                           <Dropdown.Item
-                            href={"/" + category.categoryName}
+                            href={"/home/store/" + category.id}
                             className="text-white"
                           >
                             {category.categoryName}

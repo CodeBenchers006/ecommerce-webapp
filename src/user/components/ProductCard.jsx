@@ -8,10 +8,16 @@ function ProductCard(props) {
   let location = useLocation();
   //console.log(location.pathname);
 
+  //console.log(props.grid)
+
   return (
     <div
       className={` ${
-        location.pathname === "/home/store" ? `col-${props.grid}` : "col-3"
+        location.pathname === "/home/store"
+          ? `col-${props.grid}`
+          : "col-3" || location.pathname === "/home/store/"
+          ? `col-${props.grid}`
+          : "col-3"
       }`}
       style={props.card_style}
     >
@@ -38,7 +44,10 @@ function ProductCard(props) {
           <p className="price" style={{ fontSize: "20px" }}>
             ₹ {props.item.price}
           </p>
-          <div className="action-bar d-flex align-items-center" style={{flexDirection:"column"}}>
+          <div
+            className="action-bar d-flex align-items-center"
+            style={{ flexDirection: "column" }}
+          >
             <div className="justify-content-center">
               <Link to="" className="px-4">
                 <HeartOutlined />
