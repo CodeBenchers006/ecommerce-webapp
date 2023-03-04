@@ -71,7 +71,7 @@ function UserOrder() {
     let date2 = new Date(d2).getTime();
 
     if (date1 < date2) {
-      return "Items dispatched, will be delivered within 7 business days";
+      return "Items dispatched, will be delivered within 7 business days ";
     } else {
       return "Delivered on " + d2;
     }
@@ -192,15 +192,9 @@ function UserOrder() {
 
                 <div className="w-100">
                   <div className="d-flex justify-content-between align-items-center  pb-4">
-                    <NavLink to="/home/checkout" className="text-dark">
+                    <NavLink to="/home" className="text-dark">
                       <ArrowBackIcon className="me-2" />
-                      Return to Information
-                    </NavLink>
-                    <NavLink
-                      to={"/home/checkout/payment"}
-                      className="button-ship"
-                    >
-                      Continue to Payment
+                      Continue Shopping
                     </NavLink>
                   </div>
                 </div>
