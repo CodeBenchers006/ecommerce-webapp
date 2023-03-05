@@ -8,6 +8,12 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const baseURL = "http://localhost:8081/";
 
@@ -82,120 +88,90 @@ function Header() {
           </div>
         </div>
       </header>
-      <header className="header-upper py-3">
-        <div className="container-xxl">
-          <div className="row align-items-center">
-            <div className="col-2">
-              <h2>
-                <Link to={"/home"} className="text-white">
-                  BudgetBasket.
-                </Link>
-              </h2>
-            </div>
-            <div className="col-5">
-              <div className="input-group ">
-                <input
-                  class="form-control me-2 "
-                  type="search"
-                  placeholder="Search Product"
-                  aria-label="Search"
-                />
-                <button class="btn btn-success" type="submit">
-                  <SearchIcon />
-                </button>
-              </div>
-            </div>
-            <div className="col-5">
-              <div className="header-upper-links d-flex align-items-center justify-content-between">
-                <div>
-                  <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <CompareArrowsIcon />
-                    <p className="mb-0">
-                      Compare <br /> Products
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <FavoriteBorderIcon />
-                    <p className="mb-0">
-                      Favourite <br /> Wishlist
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={"/home/cart"}
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <ShoppingCartIcon />
-                    {isLoggedIn === false ? (
-                      <div className="d-flex flex-column">
-                        <span className="badge bg-white text-dark">0</span>
-                        <p className="mb-0">₹ 0</p>
-                      </div>
-                    ) : (
-                      <div className="d-flex flex-column">
-                        <span className="badge bg-white text-dark">{len}</span>
-                        <p className="mb-0">₹ {cartItems.totalCost}</p>
-                      </div>
-                    )}
-                  </Link>
-                </div>
-                {user !== null ? (
-                  <div className="">
-                    <p style={{ margin: "auto", color: "white" }}>
-                      Welcome, <br />
-                      {user}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="">
-                    <p style={{ margin: "auto", color: "white" }}></p>
-                  </div>
-                )}
-                <div>
-                  {/* <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <AccountCircleIcon />
-                    <p className="mb-0">
-                      Login <br /> Account
-                    </p>
-                  </Link> */}
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      className="bg-dark border-0"
-                      id="dropdown-basic"
-                    >
-                      <AccountCircleIcon />
-                    </Dropdown.Toggle>
+      <header className="header-upper ">
+        <Navbar collapseOnSelect expand="lg" variant="dark">
+          <Container fluid="xxl">
+            <Navbar.Brand href="/home" style={{width:"50%"}}>BudgetBasket</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="">
+                <Nav.Link
+                  href="#features"
+                  className="d-flex align-items-center "
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  <CompareArrowsIcon className="mx-3" />
+                  <p className="mb-0">
+                    Compare <br /> Products
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  href="#features"
+                  className="d-flex align-items-center"
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  <FavoriteBorderIcon className="mx-3" />
+                  <p className="mb-0">
+                    Favourite <br /> Wishlist
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  href="/home/cart"
+                  className="d-flex align-items-center" style={{width:"100%",paddingLeft:"30px"}}
+                >
+                  <ShoppingCartIcon className="mx-3" />
+                  {isLoggedIn === false ? (
+                    <div className="d-flex flex-column">
+                      <span className="badge bg-white text-dark">0</span>
+                      <p className="mb-0">₹ 0</p>
+                    </div>
+                  ) : (
+                    <div className="d-flex flex-column">
+                      <span className="badge bg-white text-dark">{len}</span>
+                      <p className="mb-0">₹ {cartItems.totalCost}</p>
+                    </div>
+                  )}
+                </Nav.Link>
+                <Nav.Item
+                  href="#features"
+                  className="d-flex align-items-center mx-4" style={{width:"100%",paddingLeft:"30px"}}
+                >
+                  {user !== null ? (
+                    <div className="">
+                      <p style={{ margin: "auto", color: "white" }}>
+                        Welcome, <br />
+                        {user}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="">
+                      <p style={{ margin: "auto", color: "white" }}></p>
+                    </div>
+                  )}
+                </Nav.Item>
 
-                    {isLoggedIn === true ? (
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="#" onClick={logOut}>
-                          Log Out
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    ) : (
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="/">Sign In</Dropdown.Item>
-                        <Dropdown.Item href="/register">Register</Dropdown.Item>
-                      </Dropdown.Menu>
-                    )}
-                  </Dropdown>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <NavDropdown
+                  title={<AccountCircleIcon />}
+                  id="collasible-nav-dropdown"
+                  className="mt-2" style={{width:"100%",paddingLeft:"30px"}}
+                >
+                  {isLoggedIn === true ? (
+                    <NavDropdown.Item href="/" onClick={logOut}>
+                      Logout
+                    </NavDropdown.Item>
+                  ) : (
+                    <>
+                      <NavDropdown.Item href="/">Sign In</NavDropdown.Item>
+                      <NavDropdown.Item href="/register">
+                        Register
+                      </NavDropdown.Item>
+                    </>
+                  )}
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
       </header>
       <header className="header-bottom py-3">
         <div className="container-xxl">

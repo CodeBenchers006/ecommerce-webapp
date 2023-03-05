@@ -140,28 +140,28 @@ function UserHomepage() {
                     <p className="mb-0">From all orders above 499</p>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
+                <div className="d-flex align-items-center gap-10">
                   <CardGiftcardOutlinedIcon />
                   <div>
                     <h6>Daily Offers and Surprises</h6>
                     <p className="mb-0">Save upto 25% off</p>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
+                <div className="d-flex align-items-center gap-10">
                   <SupportAgentOutlinedIcon />
                   <div>
                     <h6>Support 24/7</h6>
                     <p className="mb-0">Shop with an expert</p>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
+                <div className="d-flex align-items-center gap-10">
                   <CurrencyRupeeOutlinedIcon />
                   <div>
                     <h6>Affordable Prices</h6>
                     <p className="mb-0">Best quality in affordable price</p>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
+                <div className="d-flex align-items-center gap-10">
                   <CreditScoreOutlinedIcon />
                   <div>
                     <h6>Secure Payments</h6>

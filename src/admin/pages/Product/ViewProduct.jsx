@@ -17,6 +17,11 @@ function ViewProduct() {
 
   const navigate = useNavigate();
 
+  const deleteProduct=(id)=>{
+
+    console.log(id)
+  }
+
   useEffect(() => {
     fetch(baseURL + "product/" + product_id)
       .then((res) => res.json())
@@ -70,7 +75,7 @@ function ViewProduct() {
             <button className="btn btn-success" onClick={()=>{navigate('/admin/product/edit/'+product_id)}}>
               <EditIcon />
             </button>
-            <button className="btn btn-danger ">
+            <button className="btn btn-danger " onClick={()=>{deleteProduct(product)}}>
               <DeleteForeverIcon />
             </button>
             </Space>
