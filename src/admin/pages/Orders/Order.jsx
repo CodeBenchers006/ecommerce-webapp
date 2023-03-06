@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function Order() {
+
+  const baseURL = "http://localhost:8081/";
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+
+
+  useEffect(() => {
+    fetch(baseURL + "order/displayOrders")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setOrders(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
   const columns = [
     {
-      title: "SNo",
+      title: "Order No.",
       dataIndex: "key",
     },
 
@@ -32,16 +51,18 @@ function Order() {
 
   const data1 = [];
 
-  for (let i = 1; i <= 4; i++) {
+
+
+  orders.map((order)=>{
     data1.push({
-      key: i,
-      customer: `Edward King ${i}`,
-      product: "Iphone 14",
-      date: "01-02-23",
-      address: `London, Park Lane no. ${i}`,
-      status: "Dispatched",
+      key: order.orderId,
+      customer: order.customerName,
+      product: order.productName,
+      date: order.orderDate,
+      address: order.address,
+      status: order.status,
     });
-  }
+  })
 
   return (
     <div>

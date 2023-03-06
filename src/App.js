@@ -8,7 +8,7 @@ import Dashboard from "./admin/pages/Dashboard/Dashboard";
 import Order from "./admin/pages/Orders/Order";
 // import Categorylist from "./admin/pages/Category/Categorylist";
 import AddCategory from "./admin/pages/Category/AddCategory";
-import Category from "./admin/pages/Category/Category";
+import Categorylist from "./admin/pages/Category/Categorylist";
 import EditCategory from "./admin/pages/Category/EditCategory";
 import ProductList from "./admin/pages/Product/ProductList";
 import AddProduct from "./admin/pages/Product/AddProduct";
@@ -21,9 +21,16 @@ import Contact from "./user/pages/Contact/Contact";
 import SingleProduct from "./user/pages/Product/SingleProduct";
 import Cart from "./user/pages/Cart/Cart";
 import Checkout from "./user/pages/Checkout/Checkout";
-import Payment from "./user/pages/Checkout/Payment";
+import Payment from "./user/pages/Checkout/Payment/Payment";
 import Shipping from "./user/pages/Checkout/Shipping";
 import Register from "./common/Register/Register";
+import PaymentSuccess from "./user/pages/Checkout/Payment/PaymentSuccess";
+import PaymentFailed from "./user/pages/Checkout/Payment/PaymentFailed";
+import UserOrder from "./user/pages/Order/UserOrder";
+import OrderDetails from "./user/pages/Order/OrderDetails";
+import StoreById from "./user/pages/Store/StoreById";
+import InventoryPage from "./admin/pages/Inventory/InventoryPage";
+
 
 function App() {
   return (
@@ -41,7 +48,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="order" element={<Order />} />
             {/* <Route path="category" element={<Categorylist />} /> */}
-            <Route path="category" element={<Category />} />
+            <Route path="category" element={<Categorylist />} />
             <Route path="category/add" element={<AddCategory />} />
             <Route path="category/edit/:id" element={<EditCategory />} />
 
@@ -49,20 +56,28 @@ function App() {
             <Route path="product/add" element={<AddProduct />} />
             <Route path="product/view/:product_id" element={<ViewProduct />} />
             <Route path="product/edit/:product_id" element={<EditProduct />} />
+            
+            <Route path="inventory" element={<InventoryPage />} />
+
+
           </Route>
 
           <Route path="/home/" element={<Layout />}>
             <Route index element={<UserHomepage />} />
             <Route path="contact" element={<Contact />} />
             <Route path="store" element={<Store />} />
+            <Route path="store/:id" element={<StoreById />} />
             <Route path="store/product/:product_id" element={<SingleProduct/>} />
 
             <Route path="cart" element={<Cart/>} />
             <Route path="checkout" element={<Checkout/>} />
             <Route path="checkout/shipping" element={<Shipping/>} />
             <Route path="checkout/payment" element={<Payment/>} />
+            <Route exact path="checkout/payment/success" element={<PaymentSuccess/>} />
+            <Route path="checkout/payment/failed" element={<PaymentFailed />} />
             
-            
+            <Route path="order" element={<UserOrder />} />
+            <Route path="order/:id" element={<OrderDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import "../pages/User_Homepage/userhomepage.css";
 import SearchIcon from "@mui/icons-material/Search";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
@@ -8,33 +8,64 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dropdown from "react-bootstrap/Dropdown";
 import SegmentIcon from "@mui/icons-material/Segment";
-import { useParams } from "react-router-dom";
-import { P } from "@antv/g2plot";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const baseURL = "http://localhost:8081/";
 
 function Header() {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const token = queryParams.get("token");
+  const token = localStorage.getItem("user_token");
+  const user = localStorage.getItem("user_name");
 
   var isLoggedIn = false;
-  if (token != null) {
+  if (token !== "null") {
     isLoggedIn = true;
   }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+
+  const [cartItems, setCartItems] = useState("");
+
+  useEffect(() => {
+    fetch(baseURL + "cart/items?token=" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setCartItems(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  const cartItem = cartItems && cartItems.cartItemDtoList;
+  const len = cartItem?.length;
 
   useEffect(() => {
     fetch(baseURL + "category/list")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setCategories(data);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
+
+  const logOut = () => {
+    console.log("Logging out");
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <>
@@ -57,127 +88,118 @@ function Header() {
           </div>
         </div>
       </header>
-      <header className="header-upper py-3">
-        <div className="container-xxl">
-          <div className="row align-items-center">
-            <div className="col-2">
-              <h2>
-                <Link to="" className="text-white">
-                  BudgetBasket.
-                </Link>
-              </h2>
-            </div>
-            <div className="col-5">
-              <div className="input-group ">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search Product"
-                  aria-label="Search"
-                />
-                <button class="btn btn-success" type="submit">
-                  <SearchIcon />
-                </button>
-              </div>
-            </div>
-            <div className="col-5">
-              <div className="header-upper-links d-flex align-items-center justify-content-between">
-                <div>
-                  <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <CompareArrowsIcon />
-                    <p className="mb-0">
-                      Compare <br /> Products
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <FavoriteBorderIcon />
-                    <p className="mb-0">
-                      Favourite <br /> Wishlist
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={"/home/cart?token=" + token}
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <ShoppingCartIcon />
-                    {isLoggedIn === false ? (
-                      <div className="d-flex flex-column">
-                        <span className="badge bg-white text-dark">0</span>
-                        <p className="mb-0">Rs. 0</p>
-                      </div>
-                    ) : (
-                      <div className="d-flex flex-column">
-                        <span className="badge bg-white text-dark">0</span>
-                        <p className="mb-0">Rs. 15444</p>
-                      </div>
-                    )}
-                  </Link>
-                </div>
-                <div>
-                  {/* <Link
-                    to=""
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <AccountCircleIcon />
-                    <p className="mb-0">
-                      Login <br /> Account
-                    </p>
-                  </Link> */}
-                  <Dropdown>
-                    <Dropdown.Toggle
-                      className="bg-dark border-0"
-                      id="dropdown-basic"
-                    >
-                      <AccountCircleIcon />
-                    </Dropdown.Toggle>
+      <header className="header-upper ">
+        <Navbar collapseOnSelect expand="lg" variant="dark">
+          <Container fluid="xxl">
+            <Navbar.Brand href="/home" style={{ width: "50%" }}>
+              BudgetBasket
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="">
+                <Nav.Link
+                  href="#features"
+                  className="d-flex align-items-center "
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  <CompareArrowsIcon className="mx-3" />
+                  <p className="mb-0">
+                    Compare <br /> Products
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  href="#features"
+                  className="d-flex align-items-center"
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  <FavoriteBorderIcon className="mx-3" />
+                  <p className="mb-0">
+                    Favourite <br /> Wishlist
+                  </p>
+                </Nav.Link>
+                <Nav.Link
+                  href="/home/cart"
+                  className="d-flex align-items-center"
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  <ShoppingCartIcon className="mx-3" />
+                  {isLoggedIn === false ? (
+                    <div className="d-flex flex-column">
+                      <span className="badge bg-white text-dark">0</span>
+                      <p className="mb-0">₹ 0</p>
+                    </div>
+                  ) : (
+                    <div className="d-flex flex-column">
+                      <span className="badge bg-white text-dark">{len}</span>
+                      <p className="mb-0">₹ {cartItems.totalCost}</p>
+                    </div>
+                  )}
+                </Nav.Link>
+                <Nav.Item
+                  href="#features"
+                  className="d-flex align-items-center mx-4"
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  {user !== null ? (
+                    <div className="">
+                      <p style={{ margin: "auto", color: "white" }}>
+                        Welcome, <br />
+                        {user}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="">
+                      <p style={{ margin: "auto", color: "white" }}></p>
+                    </div>
+                  )}
+                </Nav.Item>
 
-                    {isLoggedIn === true ? (
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
-                      </Dropdown.Menu>
-                    ) : (
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="/">Sign In</Dropdown.Item>
-                        <Dropdown.Item href="/register">Register</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Log Out</Dropdown.Item>
-                      </Dropdown.Menu>
-                    )}
-                  </Dropdown>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <NavDropdown
+                  title={<AccountCircleIcon />}
+                  id="collasible-nav-dropdown"
+                  className="mt-2"
+                  style={{ width: "100%", paddingLeft: "30px" }}
+                >
+                  {isLoggedIn === true ? (
+                    <NavDropdown.Item href="/" onClick={logOut}>
+                      Logout
+                    </NavDropdown.Item>
+                  ) : (
+                    <>
+                      <NavDropdown.Item href="/">Sign In</NavDropdown.Item>
+                      <NavDropdown.Item href="/register">
+                        Register
+                      </NavDropdown.Item>
+                    </>
+                  )}
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
       </header>
       <header className="header-bottom py-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-15">
-                <div>
+                <div style={{ width: "20%" }}>
                   <Dropdown>
                     <Dropdown.Toggle variant="" id="dropdown-basic">
                       <SegmentIcon className="" />
-                      <span className="px-3 d-inline-block">
+                      <span
+                        className="px-3 d-inline-block"
+                        style={{ width: "100%" }}
+                      >
                         Show Categories
                       </span>
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu className="bg-black w-100">
+                    <Dropdown.Menu className="bg-black ">
                       {categories.map((category) => {
                         return (
                           <Dropdown.Item
-                            href={"/" + category.categoryName}
+                            href={"/home/store/" + category.id}
                             className="text-white"
                           >
                             {category.categoryName}
@@ -189,7 +211,7 @@ function Header() {
                 </div>
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
-                    <NavLink to="/home" className="px-2">
+                    <NavLink to={"/home"} className="px-2">
                       Home
                     </NavLink>
                     <NavLink to="/home/store" className="px-2">
@@ -197,6 +219,9 @@ function Header() {
                     </NavLink>
                     <NavLink to="/home/contact" className="px-2">
                       Contact
+                    </NavLink>
+                    <NavLink to="/home/order" className="px-2">
+                      Orders
                     </NavLink>
                   </div>
                 </div>

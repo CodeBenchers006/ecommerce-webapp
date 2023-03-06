@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Meta from "../../components/Meta";
-import "./checkout.css";
-import { Link, NavLink,useNavigate } from "react-router-dom";
+import Meta from "../../../components/Meta";
+import "../checkout.css";
+import { NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import data from "./countries.json";
+//import { Stripe } from "stripe";
+import axios from "axios";
 import Swal from "sweetalert2";
 
-function Shipping(props) {
+function Payment(props) {
   const token = localStorage.getItem("user_token");
+
   const navigate = useNavigate();
 
   var isLoggedIn = false;
@@ -43,13 +45,71 @@ function Shipping(props) {
       });
   }, []);
 
-  const [desh, setDesh] = useState("");
-
   const cartItem = cartItems.cartItemDtoList;
+
+  const paymentDataBody = {
+    stripeAPIToken:
+      "pk_test_51MfPuCSANj0YohHT1l3DeZkPdWLDfhkUGG99hjeedwfsy5rKjDmQ7Z7NIccBQxfN9HyONynfAHtlpHQH0HARVmZ900XCgwFPTw",
+    stripe: "",
+    token: null,
+    checkOutArrayBody: [],
+  };
+
+  const getAllItems = () => {
+    for (let i = 0; i < cartItem.length; i++) {
+      paymentDataBody.checkOutArrayBody.push({
+        price: cartItem[i].product.price,
+        quantity: cartItem[i].quantity,
+        productId: cartItem[i].product.product_id,
+        productName: cartItem[i].product.name,
+      });
+      //console.log(data)
+    }
+
+    console.log(paymentDataBody.checkOutArrayBody);
+  };
+
+  const stripe = window.Stripe(paymentDataBody.stripeAPIToken);
+
+  const gotoCheckout = () => {
+    getAllItems();
+
+    console.log(paymentDataBody.checkOutArrayBody);
+    axios
+      .post(
+        baseURL + "order/create-checkout-session?token=" + token,
+        paymentDataBody.checkOutArrayBody,
+        {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        {
+          mode: "cors",
+        }
+      )
+      .then((response) => {
+        console.log("payment", response);
+        if (response.data.sessionId !== null) {
+          localStorage.setItem("sessionId", response.data.sessionId);
+          console.log(response.data.sessionId);
+        } else navigate("/home/checkout/payment/failed");
+
+        return response.data;
+      })
+      .then((session) => {
+        return stripe.redirectToCheckout({
+          sessionId: session.sessionId,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/home/checkout/payment/failed");
+      });
+  };
 
   return (
     <>
-      <Meta title="Shipping"></Meta>
+      <Meta title="Payment"></Meta>
       <div className="checkout-wrapper py-5 home-wrapper-2">
         <div className="container-xxl">
           <div className="row">
@@ -68,12 +128,10 @@ function Shipping(props) {
                       Information
                     </li>
                     &nbsp;
-                    <li className="breadcrumb-item active total text-dark">
-                      Shipping
-                    </li>
+                    <li className="breadcrumb-item active total ">Shipping</li>
                     &nbsp;
                     <li
-                      className="breadcrumb-item active total"
+                      className="breadcrumb-item active total text-dark"
                       aria-current="page"
                     >
                       Payment
@@ -84,39 +142,14 @@ function Shipping(props) {
                 <div className="w-100">
                   <div className="justify-content-between align-items-center border p-4 mb-5">
                     <div className="d-flex justify-content-between border-bottom w-100">
-                      <div className="total-price">Contact</div>
-                      <div>
-                        <p className="total">abc@gmail.com</p>
-                      </div>
-                      <div>change</div>
-                    </div>
-                    <div className="d-flex justify-content-between w-100 mt-4">
-                      <div className="total-price">Ship To</div>
+                      <div className="total-price">Payment Details</div>
                       <div>
                         <p className="total">
-                          C-15, BH Tower, Churches Colony, Dimapur. Nagaland.
-                          797112
+                          While making payment use card number 4242 4242 4242
+                          4242 and enter random cvv(3 digit)
                         </p>
                       </div>
                       <div>change</div>
-                    </div>
-                  </div>
-                </div>
-                <h4>Shipping Method</h4>
-                <div className="w-100">
-                  <div className="justify-content-between align-items-center border p-4 mb-5">
-                    <div className="d-flex justify-content-between align-items-center  w-100">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          checked
-                        />
-                        <div className="total-price">Standard</div>
-                      </div>
-                      <div className="total-price">₹ 299</div>
                     </div>
                   </div>
                 </div>
@@ -128,10 +161,11 @@ function Shipping(props) {
                       Return to Information
                     </NavLink>
                     <NavLink
-                      to={"/home/checkout/payment"}
+                      to="/home/checkout/payment"
                       className="button-ship"
+                      onClick={gotoCheckout}
                     >
-                      Continue to Payment
+                      Make Payment
                     </NavLink>
                   </div>
                 </div>
@@ -197,4 +231,4 @@ function Shipping(props) {
   );
 }
 
-export default Shipping;
+export default Payment;

@@ -1,21 +1,58 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../components/Meta";
 import "./checkout.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
+import Swal from "sweetalert2";
 
 function Checkout(props) {
-  const baseURL =
-    "http://localhost:8081/cart/items?token=3bc9addb-0d4a-4dae-b2ca-ca5702e2619a";
+  const token = localStorage.getItem("user_token");
+
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+  // console.log(token)
+  // console.log(isLoggedIn)
+
+  const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+  const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useState("");
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        text: "Login to Continue",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      navigate("/");
+    }
+  });
 
   useEffect(() => {
-    fetch(baseURL)
+    fetch(baseURL + "cart/items?token=" + token)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         setCartItems(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(baseURL + "user/" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setUserInfo(data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -61,7 +98,7 @@ function Checkout(props) {
                 </nav>
                 <h4 className="title total-price">Contact Information</h4>
                 <p className="user-details">
-                  Aditya Sharma (codebenchers006@gmail.com)
+                  {userInfo.name} ({userInfo.email})
                 </p>
                 <h4 className="mb-3 total-price">Shipping Address</h4>
                 <form
@@ -74,6 +111,7 @@ function Checkout(props) {
                       id=""
                       className="form-control form-select"
                       onChange={(e) => setDesh(e.target.value)}
+                      required
                     >
                       <option value="" selected disabled>
                         Select Country
@@ -91,6 +129,7 @@ function Checkout(props) {
                       id=""
                       className="form-control"
                       placeholder="First Name"
+                      required
                     />
                   </div>
                   <div className="flex-grow-1">
@@ -162,10 +201,10 @@ function Checkout(props) {
                         Return to Cart
                       </NavLink>
                       <NavLink
-                        to="/home/checkout/shipping"
+                        to={"/home/checkout/shipping"}
                         className="button-ship"
                       >
-                        Continue to Payment
+                        Check Shipping Details
                       </NavLink>
                     </div>
                   </div>

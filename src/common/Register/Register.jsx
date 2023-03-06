@@ -100,7 +100,7 @@ export default function Register() {
             mode: "cors",
           }
         )
-        
+
         .then(() => {
           sucessRegistered();
           navigate("/");

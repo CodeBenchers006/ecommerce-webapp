@@ -7,14 +7,30 @@ import "./singlepage.css";
 import ReactStars from "react-rating-stars-component";
 import { Image } from "antd";
 import Accordion from "react-bootstrap/Accordion";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function SingleProduct() {
   const { product_id } = useParams();
+
+  const token = localStorage.getItem("user_token");
+
+  var isLoggedIn = false;
+  if (token !== "null") {
+    isLoggedIn = true;
+  }
+  if (token === null || token === "") {
+    isLoggedIn = false;
+  }
+  console.log(token);
+  console.log(isLoggedIn);
 
   const baseURL = "http://localhost:8081/";
 
   const [product, setProduct] = useState("");
   const [category, setCategory] = useState("");
+
+  const [quantity, setQuantity] = useState(1);
 
   const navigate = useNavigate();
 
@@ -24,13 +40,13 @@ function SingleProduct() {
     fetch(baseURL + "product/" + product_id)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setProduct(data);
 
         fetch(baseURL + "category/" + data.categoryId)
           .then((res) => res.json())
           .then((cat) => {
-            console.log(cat);
+            //    console.log(cat);
             setCategory(cat);
           })
           .catch((err) => {
@@ -41,7 +57,57 @@ function SingleProduct() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, [product_id]);
+  }, []);
+
+  const loginFailed = (message) => {
+    Swal.fire({
+      text: message,
+      icon: "error",
+      confirmButtonText: "Ok",
+    });
+    navigate("/");
+  };
+
+  const addToCart = async () => {
+    const data = {
+      productId: product_id,
+      quantity: quantity,
+    };
+
+    if (token == null) {
+      console.log("Login to Order");
+      loginFailed("Please Login First");
+    } else {
+      console.log("valid user");
+      Swal.fire({
+        text: "Added to Cart",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+
+      try {
+        //console.log(data);
+        const res = await axios.post(
+          baseURL + "cart/add?token=" + token,
+          data,
+          {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          { mode: "cors" }
+        );
+        // console.log(res);
+        // window.alert("aded to cart");
+        refreshHeader();
+      } catch (err) {}
+    }
+  };
+
+  const refreshHeader = () => {
+    window.location.reload(false);
+  };
+
+  console.log(quantity);
 
   return (
     <>
@@ -86,14 +152,18 @@ function SingleProduct() {
                         name=""
                         min={1}
                         max={10}
-                        defaultValue={1}
+                        value={quantity}
                         id=""
                         style={{ width: "70px" }}
+                        onChange={(e) => setQuantity(e.target.value)}
                       />
                     </div>
                   </div>
                   <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
-                    <button className="btn border-0 addcart">
+                    <button
+                      className="btn border-0 addcart"
+                      onClick={addToCart}
+                    >
                       Add to Cart
                     </button>
                     <button className="btn border-0 buynow">Buy Now</button>
@@ -162,70 +232,152 @@ function SingleProduct() {
                     )}
                   </div>
                 </div>
-                <div className="review-form py-4">
-                  <h5>Write a Review</h5>
-                  <form action="" className="d-flex flex-column gap-15">
-                    <div>
-                      <label htmlFor="" className="py-1">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Name"
-                      />
-                    </div>
+                {isLoggedIn ? (
+                  <div className="review-form py-4">
+                    <h5>Write a Review</h5>
+                    <form action="" className="d-flex flex-column gap-15">
+                      <div>
+                        <label htmlFor="" className="py-1">
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Name"
+                        />
+                      </div>
 
-                    <div>
-                      <label htmlFor="" className="py-1">
-                        Email
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Email"
-                      />
+                      <div>
+                        <label htmlFor="" className="py-1">
+                          Email
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="" className="py-1">
+                          Mobile
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Mobile"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="" className="py-1">
+                          Rating
+                        </label>
+                        <ReactStars
+                          count={5}
+                          size={24}
+                          activeColor="#ffd700"
+                          isHalf={true}
+                          value={0}
+                          edit={true}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="" className="py-1">
+                          Comment
+                        </label>
+                        <textarea
+                          type="text"
+                          className="form-control w-100"
+                          placeholder="Comment"
+                        />
+                      </div>
+                      <div className="d-flex justify-content-end">
+                        <button className="btn border-0 btn-primary">
+                          Submit Review
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                ) : (
+                  <div className="mt-2 ">
+                    <h5
+                      style={{
+                        backgroundColor: "red",
+                        padding: "10px",
+                        textAlign: "center",
+                        color: "white",
+                      }}
+                    >
+                      Login to Review
+                    </h5>
+                    <div
+                      className="review-form py-4"
+                      style={{ opacity: "0.3", pointerEvents: "none" }}
+                    >
+                      <h5>Write a Review</h5>
+                      <form action="" className="d-flex flex-column gap-15">
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Name"
+                          />
+                        </div>
+
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Email
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Email"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Mobile
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Mobile"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Rating
+                          </label>
+                          <ReactStars
+                            count={5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            value={0}
+                            edit={true}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Comment
+                          </label>
+                          <textarea
+                            type="text"
+                            className="form-control w-100"
+                            placeholder="Comment"
+                          />
+                        </div>
+                        <div className="d-flex justify-content-end">
+                          <button className="btn border-0 btn-primary">
+                            Submit Review
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                    <div>
-                      <label htmlFor="" className="py-1">
-                        Mobile
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Mobile"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="" className="py-1">
-                        Rating
-                      </label>
-                      <ReactStars
-                        count={5}
-                        size={24}
-                        activeColor="#ffd700"
-                        isHalf={true}
-                        value={0}
-                        edit={true}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="" className="py-1">
-                        Comment
-                      </label>
-                      <textarea
-                        type="text"
-                        className="form-control w-100"
-                        placeholder="Comment"
-                      />
-                    </div>
-                    <div className="d-flex justify-content-end">
-                      <button className="btn border-0 btn-primary">
-                        Submit Review
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  </div>
+                )}
                 <div className="reviews mt-3">
                   <div className="review">
                     <div className="d-flex gap-10 align-items-center">

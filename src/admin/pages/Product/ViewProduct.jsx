@@ -3,8 +3,10 @@ import { Image } from "antd";
 import { useParams } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import {Space} from 'antd';
+import { Space } from "antd";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function ViewProduct() {
   const { product_id } = useParams();
@@ -16,6 +18,30 @@ function ViewProduct() {
   const [category, setCategory] = useState("");
 
   const navigate = useNavigate();
+
+  const deleteProduct = () => {
+
+    var id = parseInt(product_id)
+    
+    axios.delete(
+      baseURL+"product/delete/"+id,
+      {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      { mode: "cors" }
+    )
+    .then((res) => console.log(res))
+    .then(()=>{
+      Swal.fire({
+        text: "Product deleted successfully",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+      navigate("/admin/product")
+    });
+
+  }
 
   useEffect(() => {
     fetch(baseURL + "product/" + product_id)
@@ -55,7 +81,7 @@ function ViewProduct() {
             </p>
             <p>
               <label htmlFor="">Description</label>
-              <h6 style={{ fontSize: "20px" }}>{product.description}</h6>
+              <p style={{ fontSize: "20px" }}>{product.description}</p>
             </p>
             <p>
               <label htmlFor="">Price</label>
@@ -67,12 +93,22 @@ function ViewProduct() {
             </p>
 
             <Space size={50}>
-            <button className="btn btn-success" onClick={()=>{navigate('/admin/product/edit/'+product_id)}}>
-              <EditIcon />
-            </button>
-            <button className="btn btn-danger ">
-              <DeleteForeverIcon />
-            </button>
+              <button
+                className="btn btn-success"
+                onClick={() => {
+                  navigate("/admin/product/edit/" + product_id);
+                }}
+              >
+                <EditIcon />
+              </button>
+              <button
+                className="btn btn-danger "
+                onClick={() => {
+                  deleteProduct();
+                }}
+              >
+                <DeleteForeverIcon />
+              </button>
             </Space>
           </div>
         </div>

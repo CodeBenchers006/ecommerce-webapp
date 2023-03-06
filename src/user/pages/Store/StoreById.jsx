@@ -3,30 +3,19 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./Store.css";
 import { NavLink, Link, useParams } from "react-router-dom";
+
 import StoreByCategory from "./StoreByCategory";
-
-
 
 const baseURL = "http://localhost:8081/";
 
-function Store() {
-  const [categories, setCategories] = useState([]);
+function StoreById() {
+  const [categories, setCategories] = useState("");
   const [product, setProduct] = useState([]);
 
-
-  const token = localStorage.getItem("user_token");
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
-
-  
+  const { id } = useParams();
 
   useEffect(() => {
-    fetch(baseURL + "category/list")
+    fetch(baseURL + "category/"+id)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -49,9 +38,6 @@ function Store() {
       });
   }, []);
 
-
-  
-
   return (
     <>
       <Meta title="Our Store"></Meta>
@@ -61,7 +47,10 @@ function Store() {
           <div className="row">
             <div className="col-3">
               <div className="filter-card mb-3">
-                <h3 className="filter-title">Showing All Products</h3>
+                <h3 className="filter-title">Showing Products of Category</h3>
+                <div>
+                  <p>{categories.categoryName}</p>
+                </div>
               </div>
               <div className="filter-card mb-3">
                 <h3 className="filter-title">Filter By</h3>
@@ -93,7 +82,7 @@ function Store() {
                 </div>
               </div>
             </div>
-            <StoreByCategory />
+            <StoreByCategory cat={id} />
           </div>
         </div>
       </div>
@@ -101,4 +90,4 @@ function Store() {
   );
 }
 
-export default Store;
+export default StoreById;
