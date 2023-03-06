@@ -9,6 +9,7 @@ import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import ProductCard from "../../components/ProductCard";
 import Meta from "../../components/Meta";
 import Carousel from "react-bootstrap/Carousel";
+import { bannerImages } from "./banners";
 
 const baseURL = "http://localhost:8081/";
 
@@ -19,14 +20,6 @@ function UserHomepage() {
   console.log(localStorage.getItem("user_token"));
 
   const token = localStorage.getItem("user_token");
-
-  const banners = [
-    "https://images-eu.ssl-images-amazon.com/images/G/31/img23/Wireless/Xiaomi/Events/Feb/XiaomiFan/Amazon_Phones_copy_3.png",
-    "https://m.media-amazon.com/images/I/61oXiG7vPkL._SX3000_.jpg",
-    "https://images-eu.ssl-images-amazon.com/images/G/31/img21/Wireless/vinambia/5thgear/1242x500_2.gif",
-    "https://images-eu.ssl-images-amazon.com/images/G/31/img21/Wireless/ssserene/OP11R/experiencestore/ingress.jpg",
-  ];
-  console.log(banners.length);
 
   useEffect(() => {
     fetch(baseURL + "category/list")
@@ -184,8 +177,8 @@ function UserHomepage() {
             <div className="col-12">
               <div className=" wrapper justify-content-center text-center">
                 <Carousel>
-                  {banners &&
-                    banners.map((item) => {
+                  {bannerImages &&
+                    bannerImages.map((item) => {
                       return (
                         <Carousel.Item
                           interval={5000}

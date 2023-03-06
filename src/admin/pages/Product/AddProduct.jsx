@@ -42,9 +42,9 @@ function AddProduct() {
   const [imageUrl, setimageUrl] = useState("");
   const [price, setprice] = useState("");
   const [description, setDescription] = useState("");
-  const [totalItems, setTotalItems] = useState("")
+  const [totalItems, setTotalItems] = useState("");
 
-  console.log(totalItems)
+  console.log(totalItems);
 
   const pathname = window.location.pathname;
   console.log(pathname);
@@ -60,7 +60,7 @@ function AddProduct() {
           imageUrl: imageUrl,
           price: price,
           description: description,
-          totalItems: totalItems
+          totalItems: totalItems,
         },
         {
           "Access-Control-Allow-Origin": "*",
@@ -141,8 +141,7 @@ function AddProduct() {
             required
             value={totalItems}
             onChange={(e) => setTotalItems(e.target.value)}
-
-            style={{width:"15%"}}
+            style={{ width: "15%" }}
           />
 
           <label htmlFor="" className="pb-3 pt-2">

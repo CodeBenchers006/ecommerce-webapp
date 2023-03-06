@@ -98,7 +98,14 @@ function StoreByCategory(props) {
             <div className="row">
               {product &&
                 product.map((prod) => {
-                  return <ProductCard grid={grid} item={prod} />;
+                  return (
+                    <ProductCard
+                      grid={grid}
+                      item={prod}
+                      styles={{ height: "100%" }}
+                      card_style={{ marginBottom: "15px" }}
+                    />
+                  );
                 })}
             </div>
           </div>
