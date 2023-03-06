@@ -45,7 +45,6 @@ function Categorylist() {
       });
   }, []);
 
-
   categories.map((cat, index) => {
     index += 1;
     data1.push({
@@ -56,7 +55,7 @@ function Categorylist() {
         <button
           className="btn btn-primary"
           onClick={() => {
-            navigate("/admin/category/edit/" +cat.id);
+            navigate("/admin/category/edit/" + cat.id);
           }}
         >
           Edit
@@ -65,7 +64,6 @@ function Categorylist() {
     });
   });
 
-  
   return (
     <div>
       <h3 className="mb-3">Category List</h3>
