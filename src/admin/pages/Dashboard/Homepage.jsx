@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import "./homepage.css";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 const { Header, Sider, Content } = Layout;
 
@@ -68,6 +69,11 @@ function Homepage() {
                 key: "order",
                 icon: <LocalShippingIcon />,
                 label: "Orders",
+              },
+              {
+                key: "sales",
+                icon: <TrendingUpIcon/>,
+                label: "Sales",
               },
               {
                 key: "notification",

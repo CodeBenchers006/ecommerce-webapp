@@ -30,6 +30,7 @@ import UserOrder from "./user/pages/Order/UserOrder";
 import OrderDetails from "./user/pages/Order/OrderDetails";
 import StoreById from "./user/pages/Store/StoreById";
 import InventoryPage from "./admin/pages/Inventory/InventoryPage";
+import Sales from "./admin/pages/Sales/Sales";
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
             <Route path="product/edit/:product_id" element={<EditProduct />} />
             
             <Route path="inventory" element={<InventoryPage />} />
+            <Route path="sales" element={<Sales />} />
 
 
           </Route>
