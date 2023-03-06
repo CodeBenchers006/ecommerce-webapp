@@ -6,6 +6,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import LogoutIcon from '@mui/icons-material/Logout';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 import { Layout, Menu, theme } from "antd";
 import React, { useState } from "react";
@@ -57,6 +58,11 @@ function Homepage() {
                 key: "product",
                 icon: <ProductionQuantityLimitsIcon />,
                 label: "Products",
+              },
+              {
+                key: "inventory",
+                icon: <InventoryIcon />,
+                label: "Inventory",
               },
               {
                 key: "order",

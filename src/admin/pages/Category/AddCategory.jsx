@@ -11,7 +11,6 @@ function AddCategory() {
 
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
 
   const showAlert = () => {
     Swal.fire({
@@ -34,7 +33,6 @@ function AddCategory() {
         {
           categoryName: categoryName,
           description: description,
-          imageUrl: imageUrl,
         },
         {
           "Access-Control-Allow-Origin": "*",
@@ -89,24 +87,7 @@ function AddCategory() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <label htmlFor="" className="mt-3">
-            Upload Image URL
-          </label>
-          <div className="mt-4">
-            <input
-              type="text"
-              name="url"
-              id=""
-              className="form-control"
-              required
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-            />
-          </div>
-          <div className="pt-5">
-            <p>Preview</p>
-            <Image width={200} src={imageUrl} />
-          </div>
+
           <button className="btn btn-success border-0 rounded-3 my-5">
             Add Category
           </button>

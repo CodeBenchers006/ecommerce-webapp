@@ -42,6 +42,9 @@ function AddProduct() {
   const [imageUrl, setimageUrl] = useState("");
   const [price, setprice] = useState("");
   const [description, setDescription] = useState("");
+  const [totalItems, setTotalItems] = useState("")
+
+  console.log(totalItems)
 
   const pathname = window.location.pathname;
   console.log(pathname);
@@ -57,6 +60,7 @@ function AddProduct() {
           imageUrl: imageUrl,
           price: price,
           description: description,
+          totalItems: totalItems
         },
         {
           "Access-Control-Allow-Origin": "*",
@@ -124,6 +128,21 @@ function AddProduct() {
             required
             value={price}
             onChange={(e) => setprice(e.target.value)}
+          />
+          <label htmlFor="" className="pb-3 pt-2">
+            Total Items
+          </label>
+          <input
+            type="number"
+            name="totalitems"
+            id=""
+            className="form-control"
+            placeholder="Enter Total Items"
+            required
+            value={totalItems}
+            onChange={(e) => setTotalItems(e.target.value)}
+
+            style={{width:"15%"}}
           />
 
           <label htmlFor="" className="pb-3 pt-2">

@@ -91,7 +91,9 @@ function Header() {
       <header className="header-upper ">
         <Navbar collapseOnSelect expand="lg" variant="dark">
           <Container fluid="xxl">
-            <Navbar.Brand href="/home" style={{width:"50%"}}>BudgetBasket</Navbar.Brand>
+            <Navbar.Brand href="/home" style={{ width: "50%" }}>
+              BudgetBasket
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="">
@@ -117,7 +119,8 @@ function Header() {
                 </Nav.Link>
                 <Nav.Link
                   href="/home/cart"
-                  className="d-flex align-items-center" style={{width:"100%",paddingLeft:"30px"}}
+                  className="d-flex align-items-center"
+                  style={{ width: "100%", paddingLeft: "30px" }}
                 >
                   <ShoppingCartIcon className="mx-3" />
                   {isLoggedIn === false ? (
@@ -134,7 +137,8 @@ function Header() {
                 </Nav.Link>
                 <Nav.Item
                   href="#features"
-                  className="d-flex align-items-center mx-4" style={{width:"100%",paddingLeft:"30px"}}
+                  className="d-flex align-items-center mx-4"
+                  style={{ width: "100%", paddingLeft: "30px" }}
                 >
                   {user !== null ? (
                     <div className="">
@@ -153,7 +157,8 @@ function Header() {
                 <NavDropdown
                   title={<AccountCircleIcon />}
                   id="collasible-nav-dropdown"
-                  className="mt-2" style={{width:"100%",paddingLeft:"30px"}}
+                  className="mt-2"
+                  style={{ width: "100%", paddingLeft: "30px" }}
                 >
                   {isLoggedIn === true ? (
                     <NavDropdown.Item href="/" onClick={logOut}>
@@ -178,16 +183,19 @@ function Header() {
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-15">
-                <div>
+                <div style={{ width: "20%" }}>
                   <Dropdown>
                     <Dropdown.Toggle variant="" id="dropdown-basic">
                       <SegmentIcon className="" />
-                      <span className="px-3 d-inline-block">
+                      <span
+                        className="px-3 d-inline-block"
+                        style={{ width: "100%" }}
+                      >
                         Show Categories
                       </span>
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu className="bg-black w-100">
+                    <Dropdown.Menu className="bg-black ">
                       {categories.map((category) => {
                         return (
                           <Dropdown.Item

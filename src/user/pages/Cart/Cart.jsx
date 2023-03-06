@@ -148,7 +148,7 @@ function Cart() {
                 <div className="d-flex align-items-end flex-column">
                   <h4>SubTotal : ₹ {cartItems.totalCost}</h4>
                   <p>Taxes and shipping calculated at checkout</p>
-                  {isLoggedIn === true ? (
+                  {isLoggedIn === true && len>0 ? (
                     <NavLink className="button" to={"/home/checkout"}>
                       Checkout
                     </NavLink>

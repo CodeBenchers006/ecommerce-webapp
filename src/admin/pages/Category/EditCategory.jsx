@@ -38,7 +38,6 @@ function EditCategory() {
       let data = {
         categoryName: category.categoryName,
         description: category.description,
-        imageUrl: category.imageUrl,
       };
       console.log(category);
       const res = await axios.put(
@@ -64,9 +63,6 @@ function EditCategory() {
     }
     if (e.target.name === "description") {
       setCategory({ ...category, description: e.target.value });
-    }
-    if (e.target.name === "url") {
-      setCategory({ ...category, imageUrl: e.target.value });
     }
   };
 
@@ -113,23 +109,7 @@ function EditCategory() {
             value={category.description}
             onChange={(e) => edithandler(e)}
           />
-          <label htmlFor="" className="mt-3">
-            Upload Image
-          </label>
-          <div className="mt-4">
-            <input
-              type="text"
-              name="url"
-              id=""
-              className="form-control"
-              value={category.imageUrl}
-              onChange={(e) => edithandler(e)}
-            />
-          </div>
-          <div className="pt-5">
-            <p>Preview</p>
-            <Image width={200} src={category.imageUrl} />
-          </div>
+
           <button className="btn btn-success border-0 rounded-3 my-5">
             Edit Category
           </button>
