@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../pages/User_Homepage/userhomepage.css";
-import SearchIcon from "@mui/icons-material/Search";
+
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -12,8 +12,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+
 
 const baseURL = "http://localhost:8081/";
 
@@ -217,11 +216,11 @@ function Header() {
                     <NavLink to="/home/store" className="px-2">
                       Store
                     </NavLink>
-                    <NavLink to="/home/contact" className="px-2">
-                      Contact
-                    </NavLink>
                     <NavLink to="/home/order" className="px-2">
                       Orders
+                    </NavLink>
+                    <NavLink to="/home/contact" className="px-2">
+                      Contact
                     </NavLink>
                   </div>
                 </div>

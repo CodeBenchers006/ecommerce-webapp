@@ -35,6 +35,7 @@ function SingleProduct() {
   const navigate = useNavigate();
 
   const [orderedProduct, setOrderedProduct] = useState(true);
+  const [Inventory, setInventory] = useState("");
 
   useEffect(() => {
     fetch(baseURL + "product/" + product_id)
@@ -53,6 +54,17 @@ function SingleProduct() {
             console.log(err.message);
           });
       })
+      .then(
+        fetch(baseURL + "inventory/getByProduct/" + product_id)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setInventory(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      )
 
       .catch((err) => {
         console.log(err.message);
@@ -141,7 +153,13 @@ function SingleProduct() {
                   </div>
                   <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
                     <h3 className="product-heading">Availability :</h3>
-                    <p className="product-data">In Stock</p>
+                    {Inventory.totalItems >= 1 ? (
+                      <p className="product-data">
+                        In Stock {"(" + Inventory.totalItems + ")"}
+                      </p>
+                    ) : (
+                      <p className="product-data">Out of Stock</p>
+                    )}
                   </div>
                   <div className="d-flex gap-10 flex-row  mt-2 mb-3">
                     <h3 className="product-heading mt-2">Quantity :</h3>
@@ -151,7 +169,7 @@ function SingleProduct() {
                         type="number"
                         name=""
                         min={1}
-                        max={10}
+                        max={Inventory.totalItems}
                         value={quantity}
                         id=""
                         style={{ width: "70px" }}
@@ -159,15 +177,34 @@ function SingleProduct() {
                       />
                     </div>
                   </div>
-                  <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
-                    <button
-                      className="btn border-0 addcart"
-                      onClick={addToCart}
-                    >
-                      Add to Cart
-                    </button>
-                    <button className="btn border-0 buynow">Buy Now</button>
-                  </div>
+                  {Inventory.totalItems >= 1 &&
+                  quantity <= Inventory.totalItems && quantity !==null ? (
+                    <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
+                      <button
+                        className="btn border-0 addcart"
+                        onClick={addToCart}
+                      >
+                        Add to Cart
+                      </button>
+                      <button className="btn border-0 buynow">Buy Now</button>
+                    </div>
+                  ) : (
+                    <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
+                      <button
+                        className="btn border-0 addcart btn-danger"
+                        onClick={addToCart}
+                        disabled
+                      >
+                        Add to Cart
+                      </button>
+                      <button
+                        className="btn border-0 buynow btn-danger"
+                        disabled
+                      >
+                        Buy Now
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <Accordion>
