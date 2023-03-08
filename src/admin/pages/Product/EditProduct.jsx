@@ -60,6 +60,7 @@ function EditProduct() {
         price: product.price,
         description: product.description,
         categoryId: product.categoryId,
+        totalItems:product.totalItems
       };
       const res = await axios.put(
         baseURL + "product/update/" + product_id,
@@ -93,6 +94,9 @@ function EditProduct() {
     }
     if (e.target.name === "categoryid") {
       setProduct({ ...product, categoryId: e.target.value });
+    }
+    if (e.target.name === "totalItems") {
+      setProduct({ ...product, totalItems: e.target.value });
     }
   };
 
@@ -141,6 +145,20 @@ function EditProduct() {
             className="form-control"
             value={product.price}
             onChange={(e) => editHandler(e)}
+          />
+          <label htmlFor="" className="pb-3 pt-2">
+            Total Items
+          </label>
+          <input
+            type="number"
+            name="totalItems"
+            id=""
+            className="form-control"
+            placeholder="Enter Total Items"
+            required
+            value={product.totalItems}
+            onChange={(e) => editHandler(e)}
+            style={{ width: "15%" }}
           />
           <label htmlFor="" className="pb-3 pt-2">
             Category

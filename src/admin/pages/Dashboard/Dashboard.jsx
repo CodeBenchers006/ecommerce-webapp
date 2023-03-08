@@ -1,11 +1,28 @@
-import React from "react";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
+import React, { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const baseURL = "http://localhost:8081/";
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetch(baseURL + "order/displayOrders")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setOrders(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
   const columns = [
     {
-      title: "SNo",
+      title: "Order No.",
       dataIndex: "key",
     },
 
@@ -33,51 +50,27 @@ function Dashboard() {
 
   const data1 = [];
 
-  for (let i = 1; i <= 4; i++) {
+  orders.map((order) => {
     data1.push({
-      key: i,
-      customer: `Edward King ${i}`,
-      product: "Iphone 14",
-      date: "01-02-23",
-      address: `London, Park Lane no. ${i}`,
-      status: "Dispatched",
+      key: order.orderId,
+      customer: order.customerName,
+      product: order.productName,
+      date: order.orderDate,
+      address: order.address,
+      status: order.status,
     });
-  }
+  });
 
   const data = [
     {
       type: "Jan",
       sales: 38,
-    },
-    {
-      type: "Feb",
-      sales: 52,
-    },
-    {
-      type: "Mar",
-      sales: 61,
-    },
-    {
-      type: "Apr",
-      sales: 145,
-    },
-    {
-      type: "May",
-      sales: 48,
-    },
-    {
-      type: "Jun",
-      sales: 38,
-    },
-    {
-      type: "Jul",
-      sales: 38,
-    },
-    {
-      type: "Aug",
-      sales: 38,
-    },
+    }
   ];
+
+  const data2 =[]
+
+
   const config = {
     data,
     xField: "type",
