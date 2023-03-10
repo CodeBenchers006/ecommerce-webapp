@@ -5,12 +5,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import {  NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function PaymentSuccess() {
   // const token = localStorage.getItem("user_token");
   // const sessionId = localStorage.getItem("sessionId");
-  
 
   const current = new Date();
   const currentdate = `${current.getDate()}/${
@@ -23,10 +22,11 @@ function PaymentSuccess() {
   const baseURL = "http://localhost:8081/";
 
   const token = localStorage.getItem("user_token");
+  const user = localStorage.getItem("user_name");
 
   const sessionId = localStorage.getItem("sessionId");
   const navigate = useNavigate();
-
+  const [userAddress, setUserAddress] = useState("");
 
   var isLoggedIn = false;
   if (token !== "null") {
@@ -46,6 +46,18 @@ function PaymentSuccess() {
       navigate("/");
     }
   });
+
+  useEffect(() => {
+    fetch(baseURL + "user/showUserAddress?token=" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserAddress(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   const createorder = () => {
     if (sessionId !== null) {
@@ -87,7 +99,9 @@ function PaymentSuccess() {
                         Confirmation will be sent to your email
                       </div>
                       <div>
-                        <p className="total">abc@gmail.com</p>
+                        <p className="total">
+                          {userAddress && userAddress.user.email}
+                        </p>
                       </div>
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-4 border-bottom">
@@ -96,10 +110,11 @@ function PaymentSuccess() {
                       </div>
                       <div>
                         <p className="total">
-                          Aditya Sharma, <br />
-                          C-15, BH Tower, Churches Colony, Dimapur. Nagaland.
-                          797112 <br />
-                          +91 7005165294
+                          {user}, <br />
+                          {userAddress.address}, {userAddress.city},{" "}
+                          {userAddress.state}, {userAddress.country},
+                          {userAddress.pin} <br />
+                          {userAddress.contact}
                         </p>
                       </div>
                     </div>

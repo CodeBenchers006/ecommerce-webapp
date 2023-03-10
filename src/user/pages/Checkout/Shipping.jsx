@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Meta from "../../components/Meta";
 import "./checkout.css";
-import { Link, NavLink,useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
 import Swal from "sweetalert2";
@@ -19,6 +19,7 @@ function Shipping(props) {
   }
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
+  const [userAddress, setUserAddress] = useState("");
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -35,7 +36,7 @@ function Shipping(props) {
     fetch(baseURL + "cart/items?token=" + token)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setCartItems(data);
       })
       .catch((err) => {
@@ -43,7 +44,17 @@ function Shipping(props) {
       });
   }, []);
 
-  const [desh, setDesh] = useState("");
+  useEffect(() => {
+    fetch(baseURL + "user/showUserAddress?token=" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        //console.log(data);
+        setUserAddress(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
 
   const cartItem = cartItems.cartItemDtoList;
 
@@ -86,19 +97,32 @@ function Shipping(props) {
                     <div className="d-flex justify-content-between border-bottom w-100">
                       <div className="total-price">Contact</div>
                       <div>
-                        <p className="total">abc@gmail.com</p>
+                        <p className="total">
+                          {userAddress && userAddress.user.name}
+                        </p>
                       </div>
-                      <div>change</div>
                     </div>
                     <div className="d-flex justify-content-between w-100 mt-4">
                       <div className="total-price">Ship To</div>
                       <div>
                         <p className="total">
-                          C-15, BH Tower, Churches Colony, Dimapur. Nagaland.
-                          797112
+                          {userAddress &&
+                            userAddress.address +
+                              " - " +
+                              userAddress.apartment +
+                              " - " +
+                              userAddress.city +
+                              " - " +
+                              userAddress.state +
+                              " - " +
+                              userAddress.country +
+                              " - " +
+                              " - " +
+                              userAddress.pin +
+                              " - " +
+                              userAddress.contact}
                         </p>
                       </div>
-                      <div>change</div>
                     </div>
                   </div>
                 </div>

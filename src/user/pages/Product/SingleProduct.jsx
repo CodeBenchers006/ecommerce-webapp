@@ -86,6 +86,8 @@ function SingleProduct() {
       quantity: quantity,
     };
 
+
+
     if (token == null) {
       console.log("Login to Order");
       loginFailed("Please Login First");
@@ -94,7 +96,7 @@ function SingleProduct() {
       Swal.fire({
         text: "Added to Cart",
         icon: "success",
-        confirmButtonText: "Ok",
+        timer:2000
       });
 
       try {
