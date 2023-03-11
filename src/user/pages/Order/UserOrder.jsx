@@ -117,6 +117,10 @@ function UserOrder() {
                             <p>{user}</p>
                           </div>
                           <div>
+                            <h6>Address</h6>
+                            <p>{order.deliveryAddress}</p>
+                          </div>
+                          <div>
                             <h6>Order #{order.id} </h6>
                             <div>
                               <NavLink to={"/home/order/" + order.id}>
@@ -153,11 +157,8 @@ function UserOrder() {
                                             <div className="p-3">
                                               <p>{item.product.name}</p>
                                               <div className="w-30 d-flex ">
-                                                <button className="btn btn-primary">
-                                                  Buy Again
-                                                </button>
                                                 <button
-                                                  className="btn btn-warning mx-4"
+                                                  className="btn btn-primary"
                                                   onClick={() => {
                                                     navigate(
                                                       "/home/store/product/" +
@@ -165,7 +166,7 @@ function UserOrder() {
                                                     );
                                                   }}
                                                 >
-                                                  View Item
+                                                  Buy Again
                                                 </button>
                                               </div>
                                             </div>

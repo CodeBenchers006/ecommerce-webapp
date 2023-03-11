@@ -3,7 +3,7 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./cart.css";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link, NavLink,useNavigate } from "react-router-dom";
+import {NavLink,useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
