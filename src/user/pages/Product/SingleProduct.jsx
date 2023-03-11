@@ -408,7 +408,7 @@ function SingleProduct() {
                       </form>
                     </div>
                   ) : (
-                    <p></p>
+                    <p className="p-2 text-center border border-info">You have not purchased this product, purchase it to write a product review</p>
                   )
                 ) : (
                   <div className="mt-2 ">
