@@ -64,14 +64,18 @@ export default function Login() {
 
   const [user, setUser] = useState(body);
 
+  const [error,setError] = useState("")
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const user = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
+    
+      const user = {
+        email: data.get("email"),
+        password: data.get("password"),
+      };
+    
 
     setUser(user);
 
@@ -101,6 +105,7 @@ export default function Login() {
         console.log(err.response.data);
         const info = err.response.data;
         loginFailed(info);
+        setError(info)
       });
   };
 
@@ -132,6 +137,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              type="email"
               id="email"
               label="Email Address"
               name="email"
@@ -148,6 +154,7 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+            {error&&<p className="border border-danger m-0 p-2 text-danger text-center">! {error}</p>}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

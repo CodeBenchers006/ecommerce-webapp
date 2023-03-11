@@ -25,7 +25,7 @@ function ProductCard(props) {
         className="card product-card position-relative my-1"
         style={props.styles}
       >
-        <div className="card-image">
+        <div className="card-image" style={{height:"100%"}}>
           <img src={props.item.imageUrl} className="card-img-top" alt="..." />
         </div>
         <div className="card-body product-details">

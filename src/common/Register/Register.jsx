@@ -64,6 +64,8 @@ export default function Register() {
 
   const [user, setUser] = useState(body);
 
+  const [error,setError] = useState("")
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -108,6 +110,12 @@ export default function Register() {
         .catch((err) => console.log(err.message));
     } else {
       //failed password check
+     if(data.get("password").length<6){
+      setError("Password length must be greater than 6")
+     }
+     if(data.get("password") !== data.get("confirmPassword")){
+      setError("Password and confirm password is not matching")
+     }
       failedRegistered();
     }
   };
@@ -139,7 +147,7 @@ export default function Register() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
+              
             />
             <div className="d-flex gap-10">
               <TextField
@@ -148,7 +156,7 @@ export default function Register() {
                 id="fname"
                 label="First Name"
                 name="fname"
-                autoFocus
+               
               />
               <TextField
                 margin="normal"
@@ -156,7 +164,7 @@ export default function Register() {
                 id="lname"
                 label="Last Name"
                 name="lname"
-                autoFocus
+                
               />
             </div>
             <TextField
@@ -167,7 +175,7 @@ export default function Register() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="password"
+              
             />
             <TextField
               margin="normal"
@@ -177,8 +185,11 @@ export default function Register() {
               label="Confirm Password"
               type="password"
               id="confirmPassword"
-              autoComplete="confirmPassword"
+              
             />
+            
+              {error&&<p className="border border-danger m-0 p-3 text-danger">{error}</p>}
+            
 
             <Button
               type="submit"
