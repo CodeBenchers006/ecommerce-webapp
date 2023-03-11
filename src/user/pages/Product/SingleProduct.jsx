@@ -117,6 +117,42 @@ function SingleProduct() {
     }
   };
 
+  const buyNow = async () => {
+    const data = {
+      productId: product_id,
+      quantity: quantity,
+    };
+
+
+
+    if (token == null) {
+      console.log("Login to Order");
+      loginFailed("Please Login First");
+    } else {
+      //console.log("valid user");
+      
+      try {
+        //console.log(data);
+        const res = await axios.post(
+          baseURL + "cart/add?token=" + token,
+          data,
+          {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          { mode: "cors" }
+        );
+        // console.log(res);
+        // window.alert("aded to cart");
+        
+
+        navigate("/home/cart")
+
+        refreshHeader();
+      } catch (err) {}
+    }
+  };
+
   const refreshHeader = () => {
     window.location.reload(false);
   };
@@ -188,13 +224,13 @@ function SingleProduct() {
                       >
                         Add to Cart
                       </button>
-                      <button className="btn border-0 buynow">Buy Now</button>
+                      <button className="btn border-0 buynow"  onClick={buyNow}>Buy Now</button>
                     </div>
                   ) : (
                     <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
                       <button
                         className="btn border-0 addcart btn-danger"
-                        onClick={addToCart}
+                        
                         disabled
                       >
                         Add to Cart

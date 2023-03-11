@@ -88,7 +88,7 @@ function Cart() {
                 <div className="cart-col-2"></div>
                 <div className="cart-col-3"></div>
                 <div className="cart-col-4"></div> */}
-              {len > 0 ? (
+              {len&&len > 0 ? (
                 cartItem.map((item) => {
                   return (
                     <>

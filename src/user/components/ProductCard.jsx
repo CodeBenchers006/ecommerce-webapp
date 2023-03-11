@@ -26,7 +26,7 @@ function ProductCard(props) {
         style={props.styles}
       >
         <div className="card-image" style={{height:"100%"}}>
-          <img src={props.item.imageUrl} className="card-img-top" alt="..." />
+          <Link to={"/home/store/product/" + props.item.product_id}><img src={props.item.imageUrl} className="card-img-top" alt="..." /></Link>
         </div>
         <div className="card-body product-details">
           <h5 className="title">{props.item.name}</h5>
