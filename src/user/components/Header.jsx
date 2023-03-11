@@ -17,6 +17,11 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 const baseURL = "http://localhost:8081/";
 
 function Header() {
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -130,7 +135,7 @@ function Header() {
                   ) : (
                     <div className="d-flex flex-column">
                       <span className="badge bg-white text-dark">{len}</span>
-                      <p className="mb-0">₹ {cartItems.totalCost}</p>
+                      <p className="mb-0 mt-2">{curr.format(cartItems.totalCost)}</p>
                     </div>
                   )}
                 </Nav.Link>

@@ -10,6 +10,11 @@ function ProductCard(props) {
 
   //console.log(props.grid)
 
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   return (
     <div
       className={` ${
@@ -40,7 +45,7 @@ function ProductCard(props) {
             edit={false}
           />
           <p className="price" style={{ fontSize: "20px" }}>
-            ₹ {props.item.price}
+            {curr.format(props.item.price)}
           </p>
           <div
             className="action-bar d-flex align-items-center"

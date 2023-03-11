@@ -66,6 +66,11 @@ function SingleProduct() {
     }
   }
 
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   useEffect(() => {
     if (decision === true) {
       setOrderedProduct(decision);
@@ -211,7 +216,7 @@ function SingleProduct() {
                   <h3 className="title">{product.name}</h3>
                 </div>
                 <div className="border-bottom py-3">
-                  <p className="price">₹ {product.price}</p>
+                  <p className="price">{curr.format(product.price)}</p>
                   <div>
                     <a href="#review">Write a Review</a>
                   </div>
@@ -408,7 +413,10 @@ function SingleProduct() {
                       </form>
                     </div>
                   ) : (
-                    <p className="p-2 text-center border border-info">You have not purchased this product, purchase it to write a product review</p>
+                    <p className="p-2 text-center border border-info">
+                      You have not purchased this product, purchase it to write
+                      a product review
+                    </p>
                   )
                 ) : (
                   <div className="mt-2 ">

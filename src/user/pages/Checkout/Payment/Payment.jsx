@@ -107,6 +107,11 @@ function Payment(props) {
       });
   };
 
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   return (
     <>
       <Meta title="Payment"></Meta>
@@ -201,7 +206,7 @@ function Payment(props) {
 
                           <div className="flex-grow-1">
                             <h5 className="total-price mx-">
-                              {"₹ " + item.product.price}
+                              {curr.format(item.product.price)}
                             </h5>
                           </div>
                         </div>
@@ -212,16 +217,16 @@ function Payment(props) {
               <div className="border-bottom py-4">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="total">Subtotal</p>
-                  <p className="total-price">₹ {cartItems.totalCost}</p>
+                  <p className="total-price">{curr.format(cartItems.totalCost)}</p>
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="mb-0 total">Shipping</p>
-                  <p className="mb-0 total-price">₹ {"299"}</p>
+                  <p className="mb-0 total-price">{curr.format(99)}</p>
                 </div>
               </div>
               <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                 <h4 className="total">Total</h4>
-                <h5 className="total-price">₹ {cartItems.totalCost + 299}</h5>
+                <h5 className="total-price">{curr.format(cartItems.totalCost + 99)}</h5>
               </div>
             </div>
           </div>

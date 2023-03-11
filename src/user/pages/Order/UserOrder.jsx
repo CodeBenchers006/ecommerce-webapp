@@ -46,36 +46,33 @@ function UserOrder() {
   }, []);
 
   const getOrderDate = (createdDate) => {
-    return (
-      new Date(createdDate).getDate() +
-      "/" +
-      new Date(createdDate).getMonth() +
-      "/" +
-      new Date(createdDate).getFullYear()
-    );
+    const d = `${new Date(createdDate).getDate()}` +"/" + `${new Date(createdDate).getMonth()+1}` +"/" + `${new Date(createdDate).getFullYear()}`
+    return d
   };
 
   const getDeliveredDate = (createdDate) => {
-    return (
-      new Date(createdDate).getDate() +
-      7 +
-      "/" +
-      new Date(createdDate).getMonth() +
-      "/" +
-      new Date(createdDate).getFullYear()
-    );
+    const d = `${new Date(createdDate).getDate()+7}` +"/" + `${new Date(createdDate).getMonth()+1}` +"/" + `${new Date(createdDate).getFullYear()}`
+    console.log(d)
+    return d
   };
 
   const compareDates = (d1, d2) => {
-    let date1 = new Date(d1).getTime();
-    let date2 = new Date(d2).getTime();
+    var date1 = Date.now(d1)
+    var date2 = Date.now(d1)+7;
 
+
+    console.log(date1)
     if (date1 < date2) {
-      return "Items dispatched, will be delivered within 7 business days ";
+      return "Items dispatched, will be delivered within 7 business days. Estimated delivery date: "+d2;
     } else {
       return "Delivered on " + d2;
     }
   };
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   return (
     <>
@@ -104,23 +101,23 @@ function UserOrder() {
                           className="d-flex justify-content-between  w-100 p-3"
                           style={{ backgroundColor: "#BDCDD6" }}
                         >
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Order Placed</h6>
                             <p>{order.createdDate}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Total</h6>
-                            <p>Rs {order.totalPrice}</p>
+                            <p>{curr.format(order.totalPrice)}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Ship To</h6>
                             <p>{user}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Address</h6>
                             <p>{order.deliveryAddress}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Order #{order.id} </h6>
                             <div>
                               <NavLink to={"/home/order/" + order.id}>

@@ -69,6 +69,11 @@ function Cart() {
       .then(window.location.reload(false));
   };
 
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   return (
     <>
       <Meta title="Cart"></Meta>
@@ -106,7 +111,7 @@ function Cart() {
                           </div>
                         </div>
                         <div className="cart-col-2">
-                          <h5 className="price">₹ {item.product.price}</h5>
+                          <h5 className="price">{curr.format(item.product.price)}</h5>
                         </div>
                         <div className="cart-col-3 ">
                           <h5 className="quantity">
