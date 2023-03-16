@@ -187,7 +187,7 @@ function Header() {
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-15">
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "100%" }}>
                   <Dropdown>
                     <Dropdown.Toggle variant="" id="dropdown-basic">
                       <SegmentIcon className="" />
@@ -213,9 +213,9 @@ function Header() {
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
-                <div className="menu-links">
-                  <div className="d-flex align-items-center gap-15">
-                    <NavLink to={"/home"} className="px-2">
+                <div className="menu-links" >
+                  <div className="d-flex align-items-center gap-15" >
+                    <NavLink to={"/home"} className="px-2" >
                       Home
                     </NavLink>
                     <NavLink to="/home/store" className="px-2">

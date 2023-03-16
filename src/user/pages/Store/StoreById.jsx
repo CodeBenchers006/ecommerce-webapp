@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./Store.css";
-import { NavLink, Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import StoreByCategory from "./StoreByCategory";
 
@@ -24,7 +24,7 @@ function StoreById() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetch(baseURL + "product/listAll")

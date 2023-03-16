@@ -83,7 +83,7 @@ function Checkout(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("A name was submitted: ");
+    
     let info = {
       country: data[country].country,
       firstName: fname,

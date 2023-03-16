@@ -4,6 +4,38 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import Meta from "../../components/Meta";
 import "../Checkout/checkout.css";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
+
+
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Modal heading
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Centered Modal</h4>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+          consectetur ac, vestibulum at eros.
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function OrderDetails() {
   const { id } = useParams();
@@ -38,7 +70,7 @@ function OrderDetails() {
     fetch(baseURL + "order/" + id + "?token=" + token)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //  console.log(data);
         setOrderDetails(data);
       })
       .catch((err) => {
@@ -46,7 +78,7 @@ function OrderDetails() {
       });
   }, []);
 
-  console.log(id);
+  // console.log(id);
 
   const getOrderDate = (createdDate) => {
     const d =
@@ -65,7 +97,7 @@ function OrderDetails() {
       `${new Date(createdDate).getMonth() + 1}` +
       "/" +
       `${new Date(createdDate).getFullYear()}`;
-    console.log(d);
+    //console.log(d);
     return d;
   };
 
@@ -78,7 +110,7 @@ function OrderDetails() {
     var date1 = Date.now(d1);
     var date2 = Date.now(d1) + 7;
 
-    console.log(date1);
+    //console.log(date1);
     if (date1 < date2) {
       return (
         "Items dispatched, will be delivered within 7 business days. Estimated delivery date: " +
@@ -88,6 +120,9 @@ function OrderDetails() {
       return "Delivered on " + d2;
     }
   };
+
+  const [modalShow, setModalShow] = React.useState(false);
+
   return (
     <>
       <Meta title="OrderDetails"></Meta>
@@ -105,7 +140,13 @@ function OrderDetails() {
                       <a href="">Invoice</a>
                     </p>
                   </div>
-                  <div className="border border-white border-3 rounded d-flex justify-content-between p-3">
+                  <div
+                    className="border border-white border-3 rounded d-flex justify-content-between p-3"
+                    style={{
+                      boxShadow:
+                        "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                    }}
+                  >
                     <div style={{ width: "40%", height: "100%" }}>
                       <h6>Shipping Address</h6>
                       <p>
@@ -153,45 +194,66 @@ function OrderDetails() {
                       const status = compareDates(orderDate, deliveredDate);
                       return (
                         <>
-                          <div className="border border-white border-3 rounded  p-3 my-4">
+                          <div
+                            className="border border-white border-3 rounded  p-3 my-4"
+                            style={{
+                              boxShadow:
+                                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                            }}
+                          >
                             <div>
                               <h4 style={{ fontSize: "18px" }}>{status}</h4>
                             </div>
-                            <div className="d-flex ">
-                              <img
-                                src={item.product.imageUrl}
-                                alt=""
-                                className="img-fluid me-3"
-                                style={{ width: "150px" }}
-                              />
-                              <div className="">
-                                <span>
-                                  <a
-                                    href={
-                                      "/home/store/product/" +
-                                      item.product.product_id
-                                    }
-                                  >
-                                    {item.product.name}
-                                  </a>
-                                </span>{" "}
-                                <br />
-                                <span>Sold by: CodeBenchers006</span> <br />
-                                <span>
-                                {curr.format(item.product.price)}
-                                </span>{" "}
-                                <br />
-                                <button
-                                  className="btn btn-primary mt-3"
-                                  onClick={() => {
-                                    navigate(
-                                      "/home/store/product/" +
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="d-flex">
+                                <img
+                                  src={item.product.imageUrl}
+                                  alt=""
+                                  className="img-fluid me-3"
+                                  style={{ width: "150px" }}
+                                />
+                                <div className="">
+                                  <span>
+                                    <a
+                                      href={
+                                        "/home/store/product/" +
                                         item.product.product_id
-                                    );
-                                  }}
+                                      }
+                                    >
+                                      {item.product.name}
+                                    </a>
+                                  </span>{" "}
+                                  <br />
+                                  <span>Sold by: CodeBenchers006</span> <br />
+                                  <span>
+                                    {curr.format(item.product.price)}
+                                  </span>{" "}
+                                  <br />
+                                  <button
+                                    className="btn btn-primary mt-3"
+                                    onClick={() => {
+                                      navigate(
+                                        "/home/store/product/" +
+                                          item.product.product_id
+                                      );
+                                    }}
+                                  >
+                                    Buy Again
+                                  </button>
+                                </div>
+                              </div>
+                              <div>
+                                <btn
+                                  className="btn btn-outline-info px-5"
+                                  onClick={() => setModalShow(true)}
                                 >
-                                  Buy Again
-                                </button>
+                                  Track item
+                                </btn>
+
+                                <MyVerticallyCenteredModal
+                                  show={modalShow}
+                                  onHide={() => setModalShow(false)}
+                                />
                               </div>
                             </div>
                           </div>
