@@ -37,7 +37,7 @@ function UserOrder() {
     fetch(baseURL + "order/listAll?token=" + token)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setOrderItems(data);
       })
       .catch((err) => {
@@ -52,20 +52,21 @@ function UserOrder() {
 
   const getDeliveredDate = (createdDate) => {
     const d = `${new Date(createdDate).getDate()+7}` +"/" + `${new Date(createdDate).getMonth()+1}` +"/" + `${new Date(createdDate).getFullYear()}`
-    console.log(d)
+    //console.log(d)
     return d
   };
 
-  const compareDates = (d1, d2) => {
-    var date1 = Date.now(d1)
-    var date2 = Date.now(d1)+7;
+  const compareDates = (d1, d2, orderdate, delivereddate) => {
+    var currentdate = new Date()
+    var date2 = new Date(d2)
+   // console.log(currentdate<date2)
+    //console.log(date2)
 
-
-    console.log(date1)
-    if (date1 < date2) {
-      return "Items dispatched, will be delivered within 7 business days. Estimated delivery date: "+d2;
+    
+    if (currentdate < date2) {
+      return "Items dispatched, will be delivered within 7 business days. Estimated delivery date: "+delivereddate;
     } else {
-      return "Delivered on " + d2;
+      return "Delivered on " + delivereddate;
     }
   };
 
@@ -87,14 +88,17 @@ function UserOrder() {
                 {orderItems.length > 0 ? (
                   orderItems.map((order) => {
                     const orderDate = getOrderDate(order.createdDate);
-
+                    var od = new Date(`${order.createdDate}`);
+                    var dd = new Date(order.createdDate)
+                    dd.setDate(dd.getDate()+7)
+                    
                     const deliveredDate = getDeliveredDate(order.createdDate);
 
-                    const status = compareDates(orderDate, deliveredDate);
+                    const status = compareDates(od, dd,orderDate,deliveredDate);
 
-                    //console.log(orderDate);
-                    //console.log(deliveredDate);
-                    console.log(status);
+                   // console.log(orderDate);
+                   // console.log(deliveredDate);
+                   // console.log(status);
                     return (
                       <div className="justify-content-between align-items-center mb-5 ">
                         <div

@@ -50,13 +50,23 @@ function Order() {
   const data1 = [];
 
   orders.map((order) => {
+
+    const cd=new Date()
+    var dd = new Date(order.orderDate);
+    dd.setDate(dd.getDate() + 7);
+
+    console.log(cd<dd)
+
+    
+    var status= cd<dd?("Dispatched, will be delivered in 7 business days, estimated delivery date: "+dd):("Package delivered on "+dd)
+
     data1.push({
       key: order.orderId,
       customer: order.customerName,
       product: order.productName,
       date: order.orderDate,
       address: order.address,
-      status: order.status,
+      status: status,
     });
   });
 

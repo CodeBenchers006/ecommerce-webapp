@@ -91,7 +91,7 @@ function Payment(props) {
         console.log("payment", response);
         if (response.data.sessionId !== null) {
           localStorage.setItem("sessionId", response.data.sessionId);
-          console.log(response.data.sessionId);
+          //console.log(response.data.sessionId);
         } else navigate("/home/checkout/payment/failed");
 
         return response.data;
