@@ -38,6 +38,12 @@ function SingleProduct() {
   const [Inventory, setInventory] = useState("");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  
+
+  useEffect(() => {
     fetch(baseURL + "order/listAll?token=" + token)
       .then((res) => res.json())
       .then((data) => {
@@ -127,7 +133,7 @@ function SingleProduct() {
       quantity: quantity,
     };
 
-    if (token == null) {
+    if (!isAuthenticated) {
       console.log("Login to Order");
       loginFailed("Please Login First");
     } else {
@@ -135,7 +141,7 @@ function SingleProduct() {
       Swal.fire({
         text: "Added to Cart",
         icon: "success",
-        timer: 2000,
+        timer: 1000,
       });
 
       try {
@@ -165,7 +171,7 @@ function SingleProduct() {
       quantity: quantity,
     };
 
-    if (token == null) {
+    if (!isAuthenticated) {
       console.log("Login to Order");
       loginFailed("Please Login First");
     } else {
@@ -184,17 +190,17 @@ function SingleProduct() {
         );
         console.log(res);
         // window.alert("aded to cart");
-
+        dispatch(handleAddCart(res.data));
         navigate("/home/cart");
-
-        refreshHeader();
+        
+       
       } catch (err) {}
     }
   };
 
-  const refreshHeader = () => {
-    window.location.reload(false);
-  };
+  // const refreshHeader = () => {
+  //   window.location.reload(false);
+  // };
 
   const reset = () => {
     dispatch(resetAuthState());
@@ -209,7 +215,7 @@ function SingleProduct() {
       <div className="main-product-wrapper py-5 home-wrapper-2" id="#">
         <div className="container-xxl">
           <div className="row">
-            <button onClick={reset}>reset</button>
+            {/* <button onClick={reset}>reset</button> */}
             <div className="col-lg-6 col-sm-12 col-md-6">
               <div className="main-product-image">
                 <div>

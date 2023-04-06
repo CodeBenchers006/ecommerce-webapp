@@ -101,7 +101,7 @@ export default function Login() {
         localStorage.setItem("user_token", token);
         localStorage.setItem("user_name", user);
 
-        loginSuccess();
+        // loginSuccess();
         navigate("/home");
       })
       .then((res) => dispatch(loginSuccesssss()))
