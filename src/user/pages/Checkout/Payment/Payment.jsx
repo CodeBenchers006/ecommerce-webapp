@@ -6,24 +6,19 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //import { Stripe } from "stripe";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function Payment(props) {
   const token = localStorage.getItem("user_token");
 
   const navigate = useNavigate();
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
@@ -217,7 +212,9 @@ function Payment(props) {
               <div className="border-bottom py-4">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="total">Subtotal</p>
-                  <p className="total-price">{curr.format(cartItems.totalCost)}</p>
+                  <p className="total-price">
+                    {curr.format(cartItems.totalCost)}
+                  </p>
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="mb-0 total">Shipping</p>
@@ -226,7 +223,9 @@ function Payment(props) {
               </div>
               <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                 <h4 className="total">Total</h4>
-                <h5 className="total-price">{curr.format(cartItems.totalCost + 99)}</h5>
+                <h5 className="total-price">
+                  {curr.format(cartItems.totalCost + 99)}
+                </h5>
               </div>
             </div>
           </div>

@@ -6,8 +6,7 @@ import Meta from "../../components/Meta";
 import "../Checkout/checkout.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-
-
+import { useSelector } from "react-redux";
 
 function MyVerticallyCenteredModal(props) {
   return (
@@ -45,16 +44,10 @@ function OrderDetails() {
   const user = localStorage.getItem("user_name");
 
   const navigate = useNavigate();
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",

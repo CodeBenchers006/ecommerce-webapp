@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { useNavigate } from "react-router-dom";
 
 function Order() {
   const baseURL = "http://localhost:8081/";
-  const navigate = useNavigate();
+  
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {

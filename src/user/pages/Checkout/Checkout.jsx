@@ -6,17 +6,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function Checkout(props) {
   const token = localStorage.getItem("user_token");
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   // console.log(token)
   // console.log(isLoggedIn)
 
@@ -35,7 +30,7 @@ function Checkout(props) {
 
   const [userInfo, setUserInfo] = useState("");
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",

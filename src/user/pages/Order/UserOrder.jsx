@@ -5,6 +5,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Accordion from "react-bootstrap/Accordion";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function UserOrder() {
   const token = localStorage.getItem("user_token");
@@ -12,18 +13,13 @@ function UserOrder() {
 
   const navigate = useNavigate();
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const baseURL = "http://localhost:8081/";
   const [orderItems, setOrderItems] = useState("");
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
@@ -46,12 +42,14 @@ function UserOrder() {
   }, []);
 
   const getOrderDate = (createdDate) => {
-    const d = `${new Date(createdDate).getDate()}` +"/" + `${new Date(createdDate).getMonth()+1}` +"/" + `${new Date(createdDate).getFullYear()}`
+    const ddd= new Date(createdDate);
+    const d = ddd.getDate()+"/"+(ddd.getMonth()+1)+"/"+ddd.getFullYear()
     return d
   };
 
   const getDeliveredDate = (createdDate) => {
-    const d = `${new Date(createdDate).getDate()+7}` +"/" + `${new Date(createdDate).getMonth()+1}` +"/" + `${new Date(createdDate).getFullYear()}`
+    const ddd= new Date(createdDate);
+    const d = (ddd.getDate()+7)+"/"+(ddd.getMonth()+1)+"/"+ddd.getFullYear()
     //console.log(d)
     return d
   };

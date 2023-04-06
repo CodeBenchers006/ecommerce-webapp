@@ -9,19 +9,18 @@ import { Image } from "antd";
 import Accordion from "react-bootstrap/Accordion";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { handleAddCart, resetAuthState } from "../../../common/state";
 
 function SingleProduct() {
   const { product_id } = useParams();
 
+  const dispatch = useDispatch();
+
   const token = localStorage.getItem("user_token");
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   // console.log(token);
   // console.log(isLoggedIn);
 
@@ -150,9 +149,12 @@ function SingleProduct() {
           },
           { mode: "cors" }
         );
-        // console.log(res);
+
+         console.log(res.data);
         // window.alert("aded to cart");
-        refreshHeader();
+        dispatch(handleAddCart(res.data));
+        //
+        //refreshHeader();
       } catch (err) {}
     }
   };
@@ -180,7 +182,7 @@ function SingleProduct() {
           },
           { mode: "cors" }
         );
-        // console.log(res);
+        console.log(res);
         // window.alert("aded to cart");
 
         navigate("/home/cart");
@@ -194,6 +196,10 @@ function SingleProduct() {
     window.location.reload(false);
   };
 
+  const reset = () => {
+    dispatch(resetAuthState());
+  };
+
   //console.log(quantity);
 
   return (
@@ -203,6 +209,7 @@ function SingleProduct() {
       <div className="main-product-wrapper py-5 home-wrapper-2" id="#">
         <div className="container-xxl">
           <div className="row">
+            <button onClick={reset}>reset</button>
             <div className="col-lg-6 col-sm-12 col-md-6">
               <div className="main-product-image">
                 <div>
@@ -346,7 +353,7 @@ function SingleProduct() {
                     )}
                   </div>
                 </div>
-                {isLoggedIn ? (
+                {isAuthenticated ? (
                   orderedProduct ? (
                     <div className="review-form py-4">
                       <h5>Write a Review</h5>

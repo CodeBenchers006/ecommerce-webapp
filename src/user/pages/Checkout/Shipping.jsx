@@ -5,18 +5,13 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import data from "./countries.json";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function Shipping(props) {
   const token = localStorage.getItem("user_token");
   const navigate = useNavigate();
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
   const [userAddress, setUserAddress] = useState("");
@@ -27,7 +22,7 @@ function Shipping(props) {
   });
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
