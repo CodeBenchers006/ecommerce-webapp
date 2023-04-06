@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { useNavigate } from "react-router-dom";
 
 function Order() {
   const baseURL = "http://localhost:8081/";
-  const navigate = useNavigate();
+  
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -50,13 +49,23 @@ function Order() {
   const data1 = [];
 
   orders.map((order) => {
+
+    const cd=new Date()
+    var dd = new Date(order.orderDate);
+    dd.setDate(dd.getDate() + 7);
+
+    console.log(cd<dd)
+
+    
+    var status= cd<dd?("Dispatched, will be delivered in 7 business days, estimated delivery date: "+dd):("Package delivered on "+dd)
+
     data1.push({
       key: order.orderId,
       customer: order.customerName,
       product: order.productName,
       date: order.orderDate,
       address: order.address,
-      status: order.status,
+      status: status,
     });
   });
 

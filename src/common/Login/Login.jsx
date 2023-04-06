@@ -15,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccesssss, loginFail } from "../state";
 
 function Copyright(props) {
   return (
@@ -37,6 +39,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const dispatch = useDispatch();
+
   const loginSuccess = () => {
     Swal.fire({
       text: "Login Success",
@@ -64,6 +68,8 @@ export default function Login() {
 
   const [user, setUser] = useState(body);
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -89,18 +95,22 @@ export default function Login() {
       )
 
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         const token = res.data.token;
         const user = res.data.name;
-        localStorage.setItem("user_token",token)
-        localStorage.setItem("user_name",user)
-        loginSuccess();
+        localStorage.setItem("user_token", token);
+        localStorage.setItem("user_name", user);
+
+        // loginSuccess();
         navigate("/home");
       })
+      .then((res) => dispatch(loginSuccesssss()))
+      .catch((err) => dispatch(loginFail()))
       .catch((err) => {
         console.log(err.response.data);
         const info = err.response.data;
         loginFailed(info);
+        setError(info);
       });
   };
 
@@ -132,6 +142,7 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
+              type="email"
               id="email"
               label="Email Address"
               name="email"
@@ -148,6 +159,11 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+            {error && (
+              <p className="border border-danger m-0 p-2 text-danger text-center">
+                ! {error}
+              </p>
+            )}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

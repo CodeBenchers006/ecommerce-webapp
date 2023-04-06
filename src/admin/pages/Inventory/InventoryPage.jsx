@@ -47,7 +47,7 @@ function InventoryPage() {
     data1.push({
       key: index,
       product: item.product.name,
-      totalitems: item.totalItems,
+      totalitems: item.totalItems!==0?item.totalItems:"Out of Stock",
       view: (
         <button
           className="btn btn-primary"

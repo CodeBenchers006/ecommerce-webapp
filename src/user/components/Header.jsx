@@ -12,24 +12,26 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-
+import { useSelector } from "react-redux";
 
 const baseURL = "http://localhost:8081/";
 
 function Header() {
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   const token = localStorage.getItem("user_token");
   const user = localStorage.getItem("user_name");
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const CartItems = useSelector((state) => state.auth.cartItems);
+  console.log(CartItems)
+
+  console.log(isAuthenticated);
 
   const [cartItems, setCartItems] = useState("");
 
@@ -45,8 +47,8 @@ function Header() {
       });
   }, []);
 
-  const cartItem = cartItems && cartItems.cartItemDtoList;
-  const len = cartItem?.length;
+  //const cartItem = cartItems && cartItems.cartItemDtoList;
+  const len = CartItems?.length;
 
   useEffect(() => {
     fetch(baseURL + "category/list")
@@ -68,25 +70,6 @@ function Header() {
 
   return (
     <>
-      <header className="header-top-strip">
-        <div className="container-xxl">
-          <div className="row pt-2">
-            <div className="col-6">
-              <p className="text-white">
-                Free Shipping Over Rs 499 & Free Returns
-              </p>
-            </div>
-            <div className="col-6">
-              <p className="text-end text-white">
-                Hotline:{" "}
-                <a className="text-white" href="tel:+91 7005165294">
-                  +91-7005165294
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
       <header className="header-upper ">
         <Navbar collapseOnSelect expand="lg" variant="dark">
           <Container fluid="xxl">
@@ -116,13 +99,13 @@ function Header() {
                     Favourite <br /> Wishlist
                   </p>
                 </Nav.Link>
-                <Nav.Link
-                  href="/home/cart"
-                  className="d-flex align-items-center"
+                <NavLink
+                  to="/home/cart"
+                  className="d-flex align-items-center nav-link"
                   style={{ width: "100%", paddingLeft: "30px" }}
                 >
                   <ShoppingCartIcon className="mx-3" />
-                  {isLoggedIn === false ? (
+                  {!isAuthenticated ? (
                     <div className="d-flex flex-column">
                       <span className="badge bg-white text-dark">0</span>
                       <p className="mb-0">₹ 0</p>
@@ -130,16 +113,16 @@ function Header() {
                   ) : (
                     <div className="d-flex flex-column">
                       <span className="badge bg-white text-dark">{len}</span>
-                      <p className="mb-0">₹ {cartItems.totalCost}</p>
+                      
                     </div>
                   )}
-                </Nav.Link>
+                </NavLink>
                 <Nav.Item
                   href="#features"
                   className="d-flex align-items-center mx-4"
                   style={{ width: "100%", paddingLeft: "30px" }}
                 >
-                  {user !== null ? (
+                  {isAuthenticated && user !== null ? (
                     <div className="">
                       <p style={{ margin: "auto", color: "white" }}>
                         Welcome, <br />
@@ -159,7 +142,7 @@ function Header() {
                   className="mt-2"
                   style={{ width: "100%", paddingLeft: "30px" }}
                 >
-                  {isLoggedIn === true ? (
+                  {isAuthenticated ? (
                     <NavDropdown.Item href="/" onClick={logOut}>
                       Logout
                     </NavDropdown.Item>
@@ -182,7 +165,7 @@ function Header() {
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-15">
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "100%" }}>
                   <Dropdown>
                     <Dropdown.Toggle variant="" id="dropdown-basic">
                       <SegmentIcon className="" />

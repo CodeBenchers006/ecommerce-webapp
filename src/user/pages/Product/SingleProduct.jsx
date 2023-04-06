@@ -9,21 +9,20 @@ import { Image } from "antd";
 import Accordion from "react-bootstrap/Accordion";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { handleAddCart, resetAuthState } from "../../../common/state";
 
 function SingleProduct() {
   const { product_id } = useParams();
 
+  const dispatch = useDispatch();
+
   const token = localStorage.getItem("user_token");
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
-  console.log(token);
-  console.log(isLoggedIn);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  // console.log(token);
+  // console.log(isLoggedIn);
 
   const baseURL = "http://localhost:8081/";
 
@@ -31,11 +30,59 @@ function SingleProduct() {
   const [category, setCategory] = useState("");
 
   const [quantity, setQuantity] = useState(1);
+  const [order, setOrder] = useState("");
 
   const navigate = useNavigate();
 
-  const [orderedProduct, setOrderedProduct] = useState(true);
+  const [orderedProduct, setOrderedProduct] = useState(false);
   const [Inventory, setInventory] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  
+
+  useEffect(() => {
+    fetch(baseURL + "order/listAll?token=" + token)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        setOrder(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
+  let decision = false;
+
+  for (let i = 0; i < order.length; i++) {
+    let orderItem = order[i];
+    //console.log(orderItem)
+    for (let j = 0; j < orderItem.orderItems.length; j++) {
+      let item = orderItem.orderItems[j];
+      let p = item.product.product_id.toString();
+      if (p === product_id) {
+        // console.log(true)
+        decision = true;
+        break;
+      }
+    }
+  }
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
+  useEffect(() => {
+    if (decision === true) {
+      setOrderedProduct(decision);
+    }
+  });
+
+  //console.log(orderedProduct)
 
   useEffect(() => {
     fetch(baseURL + "product/" + product_id)
@@ -58,7 +105,7 @@ function SingleProduct() {
         fetch(baseURL + "inventory/getByProduct/" + product_id)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+            //console.log(data);
             setInventory(data);
           })
           .catch((err) => {
@@ -86,7 +133,7 @@ function SingleProduct() {
       quantity: quantity,
     };
 
-    if (token == null) {
+    if (!isAuthenticated) {
       console.log("Login to Order");
       loginFailed("Please Login First");
     } else {
@@ -94,7 +141,7 @@ function SingleProduct() {
       Swal.fire({
         text: "Added to Cart",
         icon: "success",
-        confirmButtonText: "Ok",
+        timer: 1000,
       });
 
       try {
@@ -108,18 +155,58 @@ function SingleProduct() {
           },
           { mode: "cors" }
         );
-        // console.log(res);
+
+         console.log(res.data);
         // window.alert("aded to cart");
-        refreshHeader();
+        dispatch(handleAddCart(res.data));
+        //
+        //refreshHeader();
       } catch (err) {}
     }
   };
 
-  const refreshHeader = () => {
-    window.location.reload(false);
+  const buyNow = async () => {
+    const data = {
+      productId: product_id,
+      quantity: quantity,
+    };
+
+    if (!isAuthenticated) {
+      console.log("Login to Order");
+      loginFailed("Please Login First");
+    } else {
+      //console.log("valid user");
+
+      try {
+        //console.log(data);
+        const res = await axios.post(
+          baseURL + "cart/add?token=" + token,
+          data,
+          {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          { mode: "cors" }
+        );
+        console.log(res);
+        // window.alert("aded to cart");
+        dispatch(handleAddCart(res.data));
+        navigate("/home/cart");
+        
+       
+      } catch (err) {}
+    }
   };
 
-  console.log(quantity);
+  // const refreshHeader = () => {
+  //   window.location.reload(false);
+  // };
+
+  const reset = () => {
+    dispatch(resetAuthState());
+  };
+
+  //console.log(quantity);
 
   return (
     <>
@@ -128,6 +215,7 @@ function SingleProduct() {
       <div className="main-product-wrapper py-5 home-wrapper-2" id="#">
         <div className="container-xxl">
           <div className="row">
+            {/* <button onClick={reset}>reset</button> */}
             <div className="col-lg-6 col-sm-12 col-md-6">
               <div className="main-product-image">
                 <div>
@@ -141,7 +229,7 @@ function SingleProduct() {
                   <h3 className="title">{product.name}</h3>
                 </div>
                 <div className="border-bottom py-3">
-                  <p className="price">₹ {product.price}</p>
+                  <p className="price">{curr.format(product.price)}</p>
                   <div>
                     <a href="#review">Write a Review</a>
                   </div>
@@ -178,7 +266,8 @@ function SingleProduct() {
                     </div>
                   </div>
                   {Inventory.totalItems >= 1 &&
-                  quantity <= Inventory.totalItems && quantity !==null ? (
+                  quantity <= Inventory.totalItems &&
+                  quantity !== null ? (
                     <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
                       <button
                         className="btn border-0 addcart"
@@ -186,13 +275,14 @@ function SingleProduct() {
                       >
                         Add to Cart
                       </button>
-                      <button className="btn border-0 buynow">Buy Now</button>
+                      <button className="btn border-0 buynow" onClick={buyNow}>
+                        Buy Now
+                      </button>
                     </div>
                   ) : (
                     <div className="d-flex gap-10 align-items-center  mt-2 mb-3">
                       <button
                         className="btn border-0 addcart btn-danger"
-                        onClick={addToCart}
                         disabled
                       >
                         Add to Cart
@@ -269,71 +359,78 @@ function SingleProduct() {
                     )}
                   </div>
                 </div>
-                {isLoggedIn ? (
-                  <div className="review-form py-4">
-                    <h5>Write a Review</h5>
-                    <form action="" className="d-flex flex-column gap-15">
-                      <div>
-                        <label htmlFor="" className="py-1">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Name"
-                        />
-                      </div>
+                {isAuthenticated ? (
+                  orderedProduct ? (
+                    <div className="review-form py-4">
+                      <h5>Write a Review</h5>
+                      <form action="" className="d-flex flex-column gap-15">
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Name"
+                          />
+                        </div>
 
-                      <div>
-                        <label htmlFor="" className="py-1">
-                          Email
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Email"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="" className="py-1">
-                          Mobile
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Mobile"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="" className="py-1">
-                          Rating
-                        </label>
-                        <ReactStars
-                          count={5}
-                          size={24}
-                          activeColor="#ffd700"
-                          isHalf={true}
-                          value={0}
-                          edit={true}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="" className="py-1">
-                          Comment
-                        </label>
-                        <textarea
-                          type="text"
-                          className="form-control w-100"
-                          placeholder="Comment"
-                        />
-                      </div>
-                      <div className="d-flex justify-content-end">
-                        <button className="btn border-0 btn-primary">
-                          Submit Review
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Email
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Email"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Mobile
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Mobile"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Rating
+                          </label>
+                          <ReactStars
+                            count={5}
+                            size={24}
+                            activeColor="#ffd700"
+                            isHalf={true}
+                            value={0}
+                            edit={true}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="" className="py-1">
+                            Comment
+                          </label>
+                          <textarea
+                            type="text"
+                            className="form-control w-100"
+                            placeholder="Comment"
+                          />
+                        </div>
+                        <div className="d-flex justify-content-end">
+                          <button className="btn border-0 btn-primary">
+                            Submit Review
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  ) : (
+                    <p className="p-2 text-center border border-info">
+                      You have not purchased this product, purchase it to write
+                      a product review
+                    </p>
+                  )
                 ) : (
                   <div className="mt-2 ">
                     <h5

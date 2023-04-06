@@ -141,8 +141,11 @@ footer:not(:first-child) {
   background-color: #febd69;
 }
 
+.main-banner {
+  width: 95%;
+}
 .small-banner {
-  width: 44%;
+  width: 45% !important;
 }
 
 .small-banner-content {
@@ -296,11 +299,8 @@ footer:not(:first-child) {
   padding: 10px;
 }
 
-.product-link:hover{
+.product-link:hover {
   color: black;
 }
 
 /*Contact page Ends*/
-
-
-

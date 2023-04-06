@@ -5,6 +5,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Accordion from "react-bootstrap/Accordion";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function UserOrder() {
   const token = localStorage.getItem("user_token");
@@ -12,18 +13,13 @@ function UserOrder() {
 
   const navigate = useNavigate();
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const baseURL = "http://localhost:8081/";
   const [orderItems, setOrderItems] = useState("");
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
@@ -37,7 +33,7 @@ function UserOrder() {
     fetch(baseURL + "order/listAll?token=" + token)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setOrderItems(data);
       })
       .catch((err) => {
@@ -46,36 +42,36 @@ function UserOrder() {
   }, []);
 
   const getOrderDate = (createdDate) => {
-    return (
-      new Date(createdDate).getDate() +
-      "/" +
-      new Date(createdDate).getMonth() +
-      "/" +
-      new Date(createdDate).getFullYear()
-    );
+    const ddd= new Date(createdDate);
+    const d = ddd.getDate()+"/"+(ddd.getMonth()+1)+"/"+ddd.getFullYear()
+    return d
   };
 
   const getDeliveredDate = (createdDate) => {
-    return (
-      new Date(createdDate).getDate() +
-      7 +
-      "/" +
-      new Date(createdDate).getMonth() +
-      "/" +
-      new Date(createdDate).getFullYear()
-    );
+    const ddd= new Date(createdDate);
+    const d = (ddd.getDate()+7)+"/"+(ddd.getMonth()+1)+"/"+ddd.getFullYear()
+    //console.log(d)
+    return d
   };
 
-  const compareDates = (d1, d2) => {
-    let date1 = new Date(d1).getTime();
-    let date2 = new Date(d2).getTime();
+  const compareDates = (d1, d2, orderdate, delivereddate) => {
+    var currentdate = new Date()
+    var date2 = new Date(d2)
+   // console.log(currentdate<date2)
+    //console.log(date2)
 
-    if (date1 < date2) {
-      return "Items dispatched, will be delivered within 7 business days ";
+    
+    if (currentdate < date2) {
+      return "Items dispatched, will be delivered within 7 business days. Estimated delivery date: "+delivereddate;
     } else {
-      return "Delivered on " + d2;
+      return "Delivered on " + delivereddate;
     }
   };
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   return (
     <>
@@ -90,33 +86,40 @@ function UserOrder() {
                 {orderItems.length > 0 ? (
                   orderItems.map((order) => {
                     const orderDate = getOrderDate(order.createdDate);
-
+                    var od = new Date(`${order.createdDate}`);
+                    var dd = new Date(order.createdDate)
+                    dd.setDate(dd.getDate()+7)
+                    
                     const deliveredDate = getDeliveredDate(order.createdDate);
 
-                    const status = compareDates(orderDate, deliveredDate);
+                    const status = compareDates(od, dd,orderDate,deliveredDate);
 
-                    //console.log(orderDate);
-                    //console.log(deliveredDate);
-                    console.log(status);
+                   // console.log(orderDate);
+                   // console.log(deliveredDate);
+                   // console.log(status);
                     return (
                       <div className="justify-content-between align-items-center mb-5 ">
                         <div
                           className="d-flex justify-content-between  w-100 p-3"
                           style={{ backgroundColor: "#BDCDD6" }}
                         >
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Order Placed</h6>
                             <p>{order.createdDate}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Total</h6>
-                            <p>Rs {order.totalPrice}</p>
+                            <p>{curr.format(order.totalPrice)}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
                             <h6>Ship To</h6>
                             <p>{user}</p>
                           </div>
-                          <div>
+                          <div style={{width:"20%"}}>
+                            <h6>Address</h6>
+                            <p>{order.deliveryAddress}</p>
+                          </div>
+                          <div style={{width:"20%"}}>
                             <h6>Order #{order.id} </h6>
                             <div>
                               <NavLink to={"/home/order/" + order.id}>
@@ -153,11 +156,8 @@ function UserOrder() {
                                             <div className="p-3">
                                               <p>{item.product.name}</p>
                                               <div className="w-30 d-flex ">
-                                                <button className="btn btn-primary">
-                                                  Buy Again
-                                                </button>
                                                 <button
-                                                  className="btn btn-warning mx-4"
+                                                  className="btn btn-primary"
                                                   onClick={() => {
                                                     navigate(
                                                       "/home/store/product/" +
@@ -165,7 +165,7 @@ function UserOrder() {
                                                     );
                                                   }}
                                                 >
-                                                  View Item
+                                                  Buy Again
                                                 </button>
                                               </div>
                                             </div>

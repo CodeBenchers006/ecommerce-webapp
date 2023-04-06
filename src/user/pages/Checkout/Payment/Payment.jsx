@@ -6,24 +6,19 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 //import { Stripe } from "stripe";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 function Payment(props) {
   const token = localStorage.getItem("user_token");
 
   const navigate = useNavigate();
 
-  var isLoggedIn = false;
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
@@ -91,7 +86,7 @@ function Payment(props) {
         console.log("payment", response);
         if (response.data.sessionId !== null) {
           localStorage.setItem("sessionId", response.data.sessionId);
-          console.log(response.data.sessionId);
+          //console.log(response.data.sessionId);
         } else navigate("/home/checkout/payment/failed");
 
         return response.data;
@@ -106,6 +101,11 @@ function Payment(props) {
         navigate("/home/checkout/payment/failed");
       });
   };
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   return (
     <>
@@ -201,7 +201,7 @@ function Payment(props) {
 
                           <div className="flex-grow-1">
                             <h5 className="total-price mx-">
-                              {"₹ " + item.product.price}
+                              {curr.format(item.product.price)}
                             </h5>
                           </div>
                         </div>
@@ -212,16 +212,20 @@ function Payment(props) {
               <div className="border-bottom py-4">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="total">Subtotal</p>
-                  <p className="total-price">₹ {cartItems.totalCost}</p>
+                  <p className="total-price">
+                    {curr.format(cartItems.totalCost)}
+                  </p>
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="mb-0 total">Shipping</p>
-                  <p className="mb-0 total-price">₹ {"299"}</p>
+                  <p className="mb-0 total-price">{curr.format(99)}</p>
                 </div>
               </div>
               <div className="d-flex justify-content-between align-items-center border-bottom py-4">
                 <h4 className="total">Total</h4>
-                <h5 className="total-price">₹ {cartItems.totalCost + 299}</h5>
+                <h5 className="total-price">
+                  {curr.format(cartItems.totalCost + 99)}
+                </h5>
               </div>
             </div>
           </div>

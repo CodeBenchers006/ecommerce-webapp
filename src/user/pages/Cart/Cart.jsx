@@ -3,54 +3,39 @@ import BreadCrumb from "../../components/BreadCrumb";
 import Meta from "../../components/Meta";
 import "./cart.css";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link, NavLink,useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { handleremoveFromCart } from "../../../common/state";
 
 function Cart() {
   const token = localStorage.getItem("user_token");
   const navigate = useNavigate();
+  var totalPrice = 0;
+  const dispatch = useDispatch();
 
-  var isLoggedIn = false;
-
-  if (token !== "null") {
-    isLoggedIn = true;
-  }
-  if (token === null || token === "") {
-    isLoggedIn = false;
-  }
-
-  
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const cart = useSelector((state) => state.auth.cartItems);
+  //console.log(cart);
 
   const baseURL = "http://localhost:8081/";
   const [cartItems, setCartItems] = useState("");
 
-  useEffect(()=>{
-    if(!isLoggedIn){
+  useEffect(() => {
+    if (!isAuthenticated) {
       Swal.fire({
         text: "Login to Continue",
         icon: "error",
         confirmButtonText: "Ok",
       });
-      navigate("/")
+      navigate("/");
     }
-  })
+  });
 
-  useEffect(() => {
-    fetch(baseURL + "cart/items?token=" + token)
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setCartItems(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  const len = cart?.length;
 
-  const cartItem = cartItems.cartItemDtoList;
-  const len = cartItem?.length;
-  console.log(cartItem);
   //console.log(len);
 
   const deleteItem = (cartid) => {
@@ -58,16 +43,20 @@ function Cart() {
 
     axios
       .delete(
-        baseURL + "cart/delete/" + cartid + "?token=" + token,
+        baseURL + "cart/delete/cart/" + cartid + "?token=" + token,
         {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
         },
         { mode: "cors" }
       )
-      .then((res) => console.log(res))
-      .then(window.location.reload(false));
+      .then(dispatch(handleremoveFromCart(cartid)));
   };
+
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
 
   return (
     <>
@@ -88,8 +77,9 @@ function Cart() {
                 <div className="cart-col-2"></div>
                 <div className="cart-col-3"></div>
                 <div className="cart-col-4"></div> */}
-              {len > 0 ? (
-                cartItem.map((item) => {
+              {len && len > 0 ? (
+                cart.map((item) => {
+                  totalPrice = totalPrice + item.product.price * item.quantity;
                   return (
                     <>
                       <div className="d-flex cart-data py-3 justify-content-between align-items-center">
@@ -106,14 +96,16 @@ function Cart() {
                           </div>
                         </div>
                         <div className="cart-col-2">
-                          <h5 className="price">₹ {item.product.price}</h5>
+                          <h5 className="price">
+                            {curr.format(item.product.price)}
+                          </h5>
                         </div>
                         <div className="cart-col-3 ">
                           <h5 className="quantity">
                             {item.quantity}
                             <button
                               className="btn btn-danger mx-4"
-                              onClick={() => deleteItem(item.cartid)}
+                              onClick={() => deleteItem(item.cart_id)}
                             >
                               <DeleteForeverIcon />
                             </button>
@@ -146,14 +138,18 @@ function Cart() {
                   Continue To Shopping
                 </NavLink>
                 <div className="d-flex align-items-end flex-column">
-                  <h4>SubTotal : ₹ {cartItems.totalCost}</h4>
+                  <h4>SubTotal : {curr.format(totalPrice)}</h4>
                   <p>Taxes and shipping calculated at checkout</p>
-                  {isLoggedIn === true && len>0 ? (
+                  {isAuthenticated && len > 0 ? (
                     <NavLink className="button" to={"/home/checkout"}>
                       Checkout
                     </NavLink>
                   ) : (
-                    <NavLink className="button " to={"/home/checkout"} style={{pointerEvents:"none",opacity:"0.3"}}>
+                    <NavLink
+                      className="button "
+                      to={"/home/checkout"}
+                      style={{ pointerEvents: "none", opacity: "0.3" }}
+                    >
                       Checkout
                     </NavLink>
                   )}

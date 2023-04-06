@@ -10,6 +10,11 @@ function ProductCard(props) {
 
   //console.log(props.grid)
 
+  let curr = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  });
+
   return (
     <div
       className={` ${
@@ -25,8 +30,8 @@ function ProductCard(props) {
         className="card product-card position-relative my-1"
         style={props.styles}
       >
-        <div className="card-image">
-          <img src={props.item.imageUrl} className="card-img-top" alt="..." />
+        <div className="card-image" style={{height:"100%"}}>
+          <Link to={"/home/store/product/" + props.item.product_id}><img src={props.item.imageUrl} className="card-img-top" alt="..." /></Link>
         </div>
         <div className="card-body product-details">
           <h5 className="title">{props.item.name}</h5>
@@ -40,7 +45,7 @@ function ProductCard(props) {
             edit={false}
           />
           <p className="price" style={{ fontSize: "20px" }}>
-            ₹ {props.item.price}
+            {curr.format(props.item.price)}
           </p>
           <div
             className="action-bar d-flex align-items-center"

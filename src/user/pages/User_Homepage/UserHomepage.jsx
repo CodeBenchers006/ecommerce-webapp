@@ -10,28 +10,19 @@ import ProductCard from "../../components/ProductCard";
 import Meta from "../../components/Meta";
 import Carousel from "react-bootstrap/Carousel";
 import { bannerImages } from "./banners";
+import { advertisements } from "./advertisements";
 
 const baseURL = "http://localhost:8081/";
 
 function UserHomepage() {
-  const [categories, setCategories] = useState([]);
+
   const [product, setProduct] = useState([]);
 
   console.log(localStorage.getItem("user_token"));
 
-  const token = localStorage.getItem("user_token");
+//  const token = localStorage.getItem("user_token");
 
-  useEffect(() => {
-    fetch(baseURL + "category/list")
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        setCategories(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+ 
 
   useEffect(() => {
     fetch(baseURL + "product/listAll")
@@ -54,72 +45,72 @@ function UserHomepage() {
             <div className="col-lg-6 py-2">
               <div className="main-banner position-relative">
                 <img
-                  src="https://fdn.gsmarena.com/imgroot/news/22/07/iphone-14-pro-max-dummy-front/-1200/gsmarena_000.jpg"
-                  className="img-fluid rounded-3"
+                  src={advertisements[0]}
+                  className="rounded-3 main-banner"
                   alt="main banner"
                 />
-                <div className="main-banner-content position-absolute">
+                {/* <div className="main-banner-content position-absolute">
                   <h6>SUPERCHARGED FOR PROS</h6>
                   <h2>Special Sale</h2>
                   <h5>iPhone 14 Pro</h5>
                   <p>From Rs 145999</p>
                   <Link to="">BUY NOW</Link>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="col-lg-6 py-2">
               <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
                 <div className="small-banner position-relative">
                   <img
-                    src="https://static.13.cl/7/sites/default/files/smart13/articulos/field-imagen/macbookair.jpg"
+                    src={advertisements[1]}
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
-                  <div className="small-banner-content position-absolute">
+                  {/* <div className="small-banner-content position-absolute">
                     <h6>SUPERCHARGED FOR PROS</h6>
                     <h2>Special Sale</h2>
                     <h5>iPhone 14 Pro</h5>
                     <p>From Rs 145999</p>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="small-banner position-relative">
                   <img
-                    src="https://static.13.cl/7/sites/default/files/smart13/articulos/field-imagen/macbookair.jpg"
+                    src={advertisements[2]}
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
-                  <div className="small-banner-content position-absolute">
+                  {/* <div className="small-banner-content position-absolute">
                     <h6>SUPERCHARGED FOR PROS</h6>
                     <h2>Special Sale</h2>
                     <h5>iPhone 14 Pro</h5>
                     <p>From Rs 145999</p>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="small-banner position-relative">
                   <img
-                    src="https://static.13.cl/7/sites/default/files/smart13/articulos/field-imagen/macbookair.jpg"
+                    src={advertisements[3]}
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
-                  <div className="small-banner-content position-absolute">
+                  {/* <div className="small-banner-content position-absolute">
                     <h6>SUPERCHARGED FOR PROS</h6>
                     <h2>Special Sale</h2>
                     <h5>iPhone 14 Pro</h5>
                     <p>From Rs 145999</p>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="small-banner position-relative">
                   <img
-                    src="https://static.13.cl/7/sites/default/files/smart13/articulos/field-imagen/macbookair.jpg"
+                    src={advertisements[4]}
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
-                  <div className="small-banner-content position-absolute">
+                  {/* <div className="small-banner-content position-absolute">
                     <h6>SUPERCHARGED FOR PROS</h6>
                     <h2>Special Sale</h2>
                     <h5>iPhone 14 Pro</h5>
                     <p>From Rs 145999</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
