@@ -17,35 +17,19 @@ import { useSelector } from "react-redux";
 const baseURL = "http://localhost:8081/";
 
 function Header() {
-  let curr = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-  });
+ 
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("user_token");
+
   const user = localStorage.getItem("user_name");
 
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const CartItems = useSelector((state) => state.auth.cartItems);
-  console.log(CartItems)
+  // console.log(CartItems);
 
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
-  const [cartItems, setCartItems] = useState("");
-
-  useEffect(() => {
-    fetch(baseURL + "cart/items?token=" + token)
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
-        setCartItems(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
 
   //const cartItem = cartItems && cartItems.cartItemDtoList;
   const len = CartItems?.length;
@@ -70,7 +54,7 @@ function Header() {
 
   return (
     <>
-      <header className="header-upper ">
+      <header className="header-upper sticky-top">
         <Navbar collapseOnSelect expand="lg" variant="dark">
           <Container fluid="xxl">
             <Navbar.Brand href="/home" style={{ width: "50%" }}>
@@ -113,7 +97,6 @@ function Header() {
                   ) : (
                     <div className="d-flex flex-column">
                       <span className="badge bg-white text-dark">{len}</span>
-                      
                     </div>
                   )}
                 </NavLink>
@@ -160,7 +143,7 @@ function Header() {
           </Container>
         </Navbar>
       </header>
-      <header className="header-bottom py-3">
+      <header className="header-bottom py-3  ">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
